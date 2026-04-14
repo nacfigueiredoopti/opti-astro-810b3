@@ -1,0 +1,167 @@
+import type { CompositionStructureNode } from '../../../../__generated/sdk.ts';
+import { getDictionaryFromDisplaySettings } from '../../../graphql/shared/displaySettingsHelpers.ts';
+
+export function getColumnStyles(column: CompositionStructureNode) {
+    const displaySettings = column.displaySettings;
+    const dictionary = getDictionaryFromDisplaySettings(displaySettings);
+    // console.log(column.displayTemplateKey);
+    // console.log(dictionary);
+
+    let cssClasses: string[] = [];
+    
+    // Handle grid span using flexbox basis percentages for both DefaultColumn and CardColumn
+    // Using basis instead of width to work with flex-grow/shrink
+    // When a specific span is set, we override the default flex-1 behavior
+    switch (dictionary['gridSpan']) {
+        case 'span1':
+            cssClasses.push('md:basis-1/12 md:flex-none');
+            break;
+        case 'span2':
+            cssClasses.push('md:basis-2/12 md:flex-none');
+            break;
+        case 'span3':
+            cssClasses.push('md:basis-3/12 md:flex-none');
+            break;
+        case 'span4':
+            cssClasses.push('md:basis-4/12 md:flex-none');
+            break;
+        case 'span5':
+            cssClasses.push('md:basis-5/12 md:flex-none');
+            break;
+        case 'span6':
+            cssClasses.push('md:basis-6/12 md:flex-none');
+            break;
+        case 'span7':
+            cssClasses.push('md:basis-7/12 md:flex-none');
+            break;
+        case 'span8':
+            cssClasses.push('md:basis-8/12 md:flex-none');
+            break;
+        case 'span9':
+            cssClasses.push('md:basis-9/12 md:flex-none');
+            break;
+        case 'span10':
+            cssClasses.push('md:basis-10/12 md:flex-none');
+            break;
+        case 'span11':
+            cssClasses.push('md:basis-11/12 md:flex-none');
+            break;
+        case 'span12':
+            cssClasses.push('md:basis-full md:flex-none');
+            break;
+        case 'auto':
+        default:
+            // Let flexbox handle the width automatically with flex-1
+            cssClasses.push('md:flex-1');
+            break;
+    }
+    
+    switch (column.displayTemplateKey) {
+        case 'DefaultColumn':
+            switch (dictionary['contentSpacing']) {
+                case 'small':
+                    cssClasses.push('gap-2 py-2');
+                    break;
+                case 'medium':
+                    cssClasses.push('gap-4 py-4');
+                    break;
+                case 'large':
+                    cssClasses.push('gap-8 py-8 lg:gap-8 lg:py-8');
+                    break;
+                case 'xl':
+                    cssClasses.push('gap-12 py-12 lg:gap-24 lg:py-24');
+                    break;
+                case 'xxl':
+                    cssClasses.push('gap-16 py-16 lg:gap-72 lg:py-72');
+                    break;
+                default:
+                    cssClasses.push('gap-0 py-0');
+                    break;
+            }
+
+            switch (dictionary['justifyContent']) {
+                case 'center':
+                    cssClasses.push('justify-center justify-items-center');
+                    break;
+                case 'end':
+                    cssClasses.push('justify-end justify-items-end');
+                    break;
+                default:
+                    cssClasses.push('justify-start justify-items-start');
+                    break;
+            }
+
+            switch (dictionary['alignContent']) {
+                case 'center':
+                    cssClasses.push('content-center items-center');
+                    break;
+                case 'end':
+                    cssClasses.push('content-end items-end');
+                    break;
+                default:
+                    cssClasses.push('content-start items-start');
+                    break;
+            }
+
+            // switch (dictionary['alignItems']) {
+            //     case 'center':
+            //         cssClasses.push('items-center');
+            //         break;
+            //     case 'end':
+            //         cssClasses.push('items-end');
+            //         break;
+            //     default:
+            //         cssClasses.push('items-start');
+            //         break;
+            // }
+
+            switch (dictionary['showFrom']) {
+                case 'fromSmall':
+                    cssClasses.push('hidden sm:block');
+                    break;
+                case 'fromMedium':
+                    cssClasses.push('hidden md:block');
+                    break;
+                case 'fromLarge':
+                    cssClasses.push('hidden lg:block');
+                    break;
+            }
+
+            switch (dictionary['minWidth']) {
+                case 'small':
+                    cssClasses.push('lg:min-w-[24rem]');
+                    break;
+                case 'medium':
+                    cssClasses.push('lg:min-w-[48rem]');
+                    break;
+                case 'large':
+                    cssClasses.push('lg:min-w-[64rem]');
+                    break;
+            }
+
+            // Background color is now handled by globalStylesHelper
+
+            cssClasses.push('relative top-0');
+            let useChildContainer = false;
+            switch (dictionary['overflow']) {
+                case 'right':
+                    useChildContainer = true;
+                    cssClasses.push('left-0');
+                    break;
+                case 'left':
+                    useChildContainer = true;
+                    cssClasses.push('right-0');
+                    break;
+                case 'clip':
+                    cssClasses.push('overflow-hidden');
+                    break;
+            }
+
+            break;
+        default:
+            cssClasses.push('vb:NoStyles');
+            break;
+    }
+
+    return cssClasses;
+}

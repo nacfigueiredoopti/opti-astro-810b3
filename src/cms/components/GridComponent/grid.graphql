@@ -1,0 +1,11 @@
+fragment Grid on Grid {
+    RichText {
+        html
+    }
+    Items {
+        _metadata {
+            types
+        }
+        ...AllComponentsExceptGrid
+    }
+}

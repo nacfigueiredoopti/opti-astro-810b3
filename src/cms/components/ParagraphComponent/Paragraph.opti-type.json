@@ -1,0 +1,28 @@
+{
+	"key": "Paragraph",
+	"displayName": "Paragraph",
+	"description": "Basic text component for adding paragraph content.",
+	"baseType": "component",
+	"sortOrder": 0,
+	"mayContainTypes": [],
+	"mediaFileExtensions": [],
+	"compositionBehaviors": [
+		"sectionEnabled",
+		"elementEnabled",
+		"formsElementEnabled"
+	],
+	"properties": {
+		"Text": {
+			"type": "string",
+			"format": "html",
+			"displayName": "Text",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 0,
+			"indexingType": "searchable",
+			"editorSettings": {}
+		}
+	}
+}

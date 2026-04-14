@@ -1,0 +1,14 @@
+fragment ArticlePageExcerpt on ArticlePage {
+    _metadata {
+        ...PageUrl
+    }
+    PromoImage {
+        ...ContentUrl
+    }
+    Heading
+    SubHeading
+    Author
+    Body {
+        html
+    }
+}

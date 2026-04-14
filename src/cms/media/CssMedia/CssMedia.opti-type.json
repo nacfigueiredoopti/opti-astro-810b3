@@ -1,0 +1,13 @@
+{
+	"key": "CssMedia",
+	"displayName": "CSS File",
+	"description": "A media type specifically for uploading and managing CSS files, used for styling your website.",
+	"baseType": "media",
+	"sortOrder": 0,
+	"mayContainTypes": [],
+	"mediaFileExtensions": [
+		"css"
+	],
+	"compositionBehaviors": [],
+	"properties": {}
+}

@@ -1,0 +1,22 @@
+fragment formContainerData on OptiFormsContainerData {
+    SubmitConfirmationMessage
+    ResetConfirmationMessage
+    SubmitUrl {
+        type
+        default
+        hierarchical
+    }
+    Title
+    Description
+    ShowSummaryMessageAfterSubmission
+    DependencyRules {
+        TargetElement
+        SatisfiedAction
+        ConditionCombination
+        Conditions {
+            DependsOnField
+            ComparisonOperator
+            ComparisonValue
+        }
+    }
+}

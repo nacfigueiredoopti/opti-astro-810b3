@@ -1,0 +1,32 @@
+---
+// Using AstroImage alias to avoid naming conflict with ImageFragment type
+import { Image as AstroImage } from 'astro:assets';
+import type { DisplaySettingsFragment, ImageFragment } from '../../../../__generated/sdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import { getImageElementStyles } from './ImageStyling';
+import { isEditContext } from '../../shared/utils.ts';
+
+const isCmsEdit = isEditContext(Astro.url);
+
+export interface Props {
+    key: string,
+    data: ImageFragment;
+    displaySettings: DisplaySettingsFragment[];
+    contentPayload: ContentPayload;
+}
+const { key, data, displaySettings } = Astro.props as Props;
+
+const imageUrl = (data.Image as any)?.item?.Url || data.Image?.url?.default || null;
+
+const componentClass = 'component-image';
+---
+
+{imageUrl && 
+    <AstroImage
+        data-epi-block-id={isCmsEdit && key || undefined}
+        class:list={[...getImageElementStyles(displaySettings), componentClass]}
+        src={imageUrl || ''}
+        alt={data.AltText || ''}
+        inferSize={true}
+    />
+}

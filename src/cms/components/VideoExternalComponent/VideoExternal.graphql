@@ -1,0 +1,10 @@
+fragment VideoExternal on VideoExternal {
+    Provider
+    VideoExternal: Video
+    Poster {
+        ...ContentUrl
+    }
+    Params
+    PlayLabel
+    DisplayWidth
+}

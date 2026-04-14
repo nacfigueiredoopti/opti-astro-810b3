@@ -1,0 +1,32 @@
+---
+import type { SiteStylesByHostnameQuery } from '../../../../__generated/sdk';
+import { getSiteStyles, getSiteFont } from '../../shared/siteStylesHelper';
+
+const lang = Astro.currentLocale;
+
+interface Props {
+    siteStyles: SiteStylesByHostnameQuery;
+}
+
+const { siteStyles } = Astro.props;
+const styles = siteStyles?.SiteStyles?.item;
+
+const stylesList = getSiteStyles(styles);
+const fontStyle = getSiteFont(styles);
+const stylesCode = fontStyle ?
+    `
+        :root {
+            ${stylesList}
+        }
+        body {
+            font-family: var(${fontStyle});
+        }
+    ` : 
+    `
+        :root {
+            ${stylesList}
+        }
+    `;
+---
+
+<style is:inline set:html={stylesCode}></style>

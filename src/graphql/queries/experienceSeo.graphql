@@ -1,0 +1,16 @@
+query getExperienceSeo($key: String, $ver: String, $loc: [Locales]) {
+    _Experience(
+        locale: $loc
+        where: {
+            _metadata: { key: { eq: $key } }
+            _or: { _metadata: { version: { eq: $ver } } }
+        }
+    ) {
+        item {
+            _metadata {
+                types
+            }
+            ... BlankExperienceSeo
+        }
+    }
+}

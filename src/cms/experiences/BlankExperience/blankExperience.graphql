@@ -1,0 +1,11 @@
+fragment BlankExperienceSeo on BlankExperience {
+    BlankExperienceSeoSettings {
+        MetaTitle
+        MetaDescription
+        GraphType
+        Indexing
+    }
+    PageAdminSettings {
+        ...PageAdminSettingsProperty
+    }
+}

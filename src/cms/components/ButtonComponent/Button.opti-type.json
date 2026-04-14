@@ -1,0 +1,37 @@
+{
+	"key": "Button",
+	"displayName": "Button",
+	"description": "Simple clickable button component for calls-to-action or linking.",
+	"baseType": "component",
+	"sortOrder": 0,
+	"mayContainTypes": [],
+	"mediaFileExtensions": [],
+	"compositionBehaviors": [
+		"elementEnabled"
+	],
+	"properties": {
+		"ButtonLabel": {
+			"type": "string",
+			"format": "shortString",
+			"displayName": "Button Label",
+			"description": "Button Label",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 10,
+			"indexingType": "searchable",
+			"editorSettings": {}
+		},
+		"ButtonLink": {
+			"type": "component",
+			"contentType": "link",
+			"displayName": "Button Link",
+			"description": "Content the button is linking to",
+			"localized": false,
+			"required": true,
+			"group": "Information",
+			"sortOrder": 20,
+			"editorSettings": {}
+		}
+	}
+}

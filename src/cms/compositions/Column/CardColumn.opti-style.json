@@ -1,0 +1,117 @@
+{
+	"key": "CardColumn",
+	"displayName": "Column Card",
+	"nodeType": "column",
+	"isDefault": false,
+	"settings": {
+		"gridSpan": {
+			"displayName": "Grid Span (out of 12)",
+			"editor": "select",
+			"sortOrder": 5,
+			"choices": {
+				"auto": {
+					"displayName": "Auto",
+					"sortOrder": 5
+				},
+				"span1": {
+					"displayName": "1 Column",
+					"sortOrder": 10
+				},
+				"span2": {
+					"displayName": "2 Columns",
+					"sortOrder": 20
+				},
+				"span3": {
+					"displayName": "3 Columns",
+					"sortOrder": 30
+				},
+				"span4": {
+					"displayName": "4 Columns",
+					"sortOrder": 40
+				},
+				"span5": {
+					"displayName": "5 Columns",
+					"sortOrder": 50
+				},
+				"span6": {
+					"displayName": "6 Columns",
+					"sortOrder": 60
+				},
+				"span7": {
+					"displayName": "7 Columns",
+					"sortOrder": 70
+				},
+				"span8": {
+					"displayName": "8 Columns",
+					"sortOrder": 80
+				},
+				"span9": {
+					"displayName": "9 Columns",
+					"sortOrder": 90
+				},
+				"span10": {
+					"displayName": "10 Columns",
+					"sortOrder": 100
+				},
+				"span11": {
+					"displayName": "11 Columns",
+					"sortOrder": 110
+				},
+				"span12": {
+					"displayName": "12 Columns (Full)",
+					"sortOrder": 120
+				}
+			}
+		},
+		"colBackgroundColor": {
+			"displayName": "Background color",
+			"editor": "select",
+			"sortOrder": 10,
+			"choices": {
+				"white": {
+					"displayName": "White",
+					"sortOrder": 10
+				},
+				"blue": {
+					"displayName": "Blue",
+					"sortOrder": 20
+				},
+				"dark_blue": {
+					"displayName": "Dark blue",
+					"sortOrder": 30
+				},
+				"orange": {
+					"displayName": "Orange",
+					"sortOrder": 40
+				},
+				"green": {
+					"displayName": "Green",
+					"sortOrder": 50
+				},
+				"red": {
+					"displayName": "Red",
+					"sortOrder": 60
+				},
+				"purple": {
+					"displayName": "Purple",
+					"sortOrder": 70
+				}
+			}
+		},
+		"itemOrderOnSmallScreen": {
+			"displayName": "First item on small screen",
+			"editor": "select",
+			"sortOrder": 20,
+			"choices": {
+				"normal": {
+					"displayName": "Normal",
+					"sortOrder": 10
+				},
+				"last": {
+					"displayName": "Last",
+					"sortOrder": 20
+				}
+			}
+		}
+	}
+}

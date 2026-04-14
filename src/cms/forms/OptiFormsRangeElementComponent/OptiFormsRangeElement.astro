@@ -1,0 +1,77 @@
+---
+import type {
+    DisplaySettingsFragment,
+    OptiFormsRangeElement,
+} from '../../../../__generated/sdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+
+export interface Props {
+    data: OptiFormsRangeElement;
+    contentPayload: ContentPayload;
+    displaySettings: DisplaySettingsFragment[];
+    nodeKey?: string;
+    Label?: string;
+    Tooltip?: string;
+    PredefinedValue?: string;
+    Min?: number;
+    Max?: number;
+    Increment?: number;
+}
+const { data, displaySettings, nodeKey } = Astro.props as Props;
+const { Label, Tooltip, PredefinedValue, Min, Max, Increment } = data;
+
+// Ensure non-null numbers with defaults
+const safeMin: number = Min ?? 0;
+const safeMax: number = Max ?? 10;
+const safeIncrement: number = Increment ?? 1;
+// const safePredefinedValue: number = PredefinedValue ?? safeMin; // Ensure predefined value is safe
+
+// // Generate dynamic range labels
+// const rangeLabels = [];
+// for (let i = safeMin; i <= safeMax; i += safeIncrement) {
+//     rangeLabels.push(i);
+// }
+
+// Generate dynamic range labels
+const rangeLabels = [];
+const totalSteps = Math.floor((safeMax - safeMin) / safeIncrement) + 1;
+
+if (totalSteps <= 10) {
+    // Show all labels if reasonable number
+    for (let i = safeMin; i <= safeMax; i += safeIncrement) {
+        rangeLabels.push(i);
+    }
+} else {
+    // Show only key points
+    rangeLabels.push(safeMin, safeMax);
+}
+
+const inputId = Label?.replace(/\s+/g, '_') || `range-${Math.random().toString(36).substr(2, 4)}`;
+const rangeDescriptionId = `range-description-${inputId}`;
+---
+
+<fieldset class="form-control w-full rounded-2xl bg-base-100 border border-base-300 p-5 shadow-sm
+                    transition-all duration-200 ease-in-out hover:shadow-md" data-field-name={Label} data-field-key={nodeKey || undefined}>
+    <legend class="px-2 text-base font-medium text-base-content/80">{Label}</legend>
+
+    <div class="w-full">
+        <input
+            id={inputId}
+            name={inputId}
+            type="range"
+            class="range range-primary w-full transition-all duration-200"
+            min={safeMin}
+            max={safeMax}
+            value={PredefinedValue}
+            step={safeIncrement}
+            title={Tooltip}
+        />
+        <div class="mt-3 flex justify-between px-1 text-xs text-base-content/60 font-medium">
+            {rangeLabels.map((label) => <span class="transition-colors duration-150 hover:text-primary">{label}</span>)}
+        </div>
+    </div>
+
+    <p id={rangeDescriptionId} class="text-sm text-base-content/60 mt-3">
+        Range from {safeMin} to {safeMax}, step by {safeIncrement}. Use arrow keys to adjust.
+    </p>
+</fieldset>

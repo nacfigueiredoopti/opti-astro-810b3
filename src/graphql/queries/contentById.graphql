@@ -1,0 +1,14 @@
+query contentById($key: [String]!, $loc: [Locales]!, $ver: String!) {
+    _Content(
+        ids: $key
+        locale: $loc
+        where: { _metadata: { version: { eq: $ver } } }
+        variation: { include: ALL }
+    ) {
+        item {
+            _metadata {
+                types
+            }
+        }
+    }
+}

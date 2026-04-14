@@ -1,0 +1,56 @@
+---
+import qs from 'query-string';
+
+import { OPTIMIZELY_CMS_URL } from 'astro:env/client';
+import type { Locales } from 'astro';
+import Component from '../cms/components/_Component.astro';
+import Experiences from '../cms/experiences/_Experiences.astro';
+import { getOptimizelySdk } from '../graphql/getSdk';
+import type { ContentPayload } from '../graphql/shared/ContentPayload';
+import { localeToSdkLocale } from '../lib/locale-helpers';
+import Pages from '../cms/pages/_Pages.astro';
+const cmsScript =
+    OPTIMIZELY_CMS_URL &&
+    OPTIMIZELY_CMS_URL.startsWith('https://') &&
+    OPTIMIZELY_CMS_URL.includes('.cms.optimizely.com')
+        ? `${OPTIMIZELY_CMS_URL.replace(/\/$/, '')}/util/javascript/communicationinjector.js`
+        : `/communicationinjector.js`;
+
+const previewPayload = qs.parse(Astro.url.search) as unknown as ContentPayload;
+previewPayload.loc = localeToSdkLocale(previewPayload.loc);
+
+const optiResponse = await getOptimizelySdk(previewPayload).contentById({
+    key: previewPayload.key,
+    loc: previewPayload.loc as Locales,
+    ver: previewPayload.ver,
+});
+const types = optiResponse?._Content?.item?._metadata?.types;
+//@ts-ignore
+previewPayload.types = types;
+
+const isComponentType = types?.includes('_Component');
+const isExperienceType = types?.includes('_Experience');
+const isPageType = types?.includes('_Page') && isExperienceType === false;
+---
+
+<>
+    {!types && <h1 class="text-center text-5xl">Let's create some content</h1>}
+    {isComponentType && <Component data={previewPayload} />}
+    {isExperienceType && <Experiences data={previewPayload} />}
+    {isPageType && <Pages data={previewPayload} />}
+</>
+<script src=`${cmsScript}` is:inline></script>
+<script>
+    import { PREVIEW_DELAY } from 'astro:env/client';
+
+    function contentSaved(event: any) {
+        window.location = event.detail.previewUrl;
+        //window.location.reload();
+    }
+
+    window.addEventListener('optimizely:cms:contentSaved', (event) =>
+        setTimeout(() => {
+            contentSaved(event);
+        }, PREVIEW_DELAY)
+    );
+</script>

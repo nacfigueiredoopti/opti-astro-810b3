@@ -1,0 +1,4 @@
+fragment ContentArea on _IContent {
+    ...AllComponents
+    ...ArticlePageExcerpt
+}

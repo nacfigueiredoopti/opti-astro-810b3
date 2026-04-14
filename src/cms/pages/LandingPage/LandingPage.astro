@@ -1,0 +1,75 @@
+---
+import type { Locales } from 'astro';
+import type { LandingPageFragment } from '../../../../__generated/sdk';
+import { getOptimizelySdk } from '../../../graphql/getSdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import Layout from '../../../layouts/Layout.astro';
+import ContentArea from '../../shared/ContentArea/ContentArea.astro';
+
+export interface Props {
+    contentPayload: ContentPayload;
+}
+const { contentPayload } = Astro.props as Props;
+
+const optiResponse = await getOptimizelySdk(contentPayload).pageById({
+    key: contentPayload.key,
+    //@ts-ignore
+    loc: contentPayload.loc as Locales,
+    ver: contentPayload.ver,
+});
+
+const page = optiResponse?._Page?.item as LandingPageFragment;
+
+const cssClassesForContentArea =
+    'mx-auto justify-center p-2 sm:p-3 md:p-4 flex gap-8 overflow-x-auto flex-wrap';
+
+const graphType = page?.SeoSettings?.GraphType ?? 'website';
+const defaultUrl = page?._metadata?.url?.default || '';
+const hierarchicalUrl =
+    page?._metadata?.url?.type === 'SIMPLE'
+        ? page?._metadata?.url?.hierarchical
+        : '';
+const extPreviewEnabled = page?.PageAdminSettings?.EnableExternalPreview ?? false;
+
+const pageClass = 'page-landing';
+---
+
+<Layout
+    title={page.SeoSettings?.MetaTitle ??
+        page._metadata?.displayName ??
+        'Landing Page'}
+    description={page.SeoSettings?.MetaDescription ??
+        page._metadata?.displayName ??
+        'Landing Page'}
+    graphtype={graphType}
+    indexing={page.SeoSettings?.Indexing ?? false}
+    contentPayload={contentPayload}
+    defaultUrl={defaultUrl}
+    hierarchicalUrl={hierarchicalUrl ?? ''}
+    extPreviewEnabled={extPreviewEnabled}
+>
+    <div class={`max-w-screen-6xl mx-auto ${pageClass}`}>
+        <!--Top content area-->
+        <div class={cssClassesForContentArea}>
+            {
+                page?.TopContentArea?.map((contentAreaItem: any) => (
+                    <ContentArea
+                        contentPayload={contentPayload}
+                        contentAreaItem={contentAreaItem}
+                    />
+                ))
+            }
+        </div>
+        <!--Main content area-->
+        <div class={cssClassesForContentArea}>
+            {
+                page.MainContentArea?.map((contentAreaItem: any) => (
+                    <ContentArea
+                        contentPayload={contentPayload}
+                        contentAreaItem={contentAreaItem}
+                    />
+                ))
+            }
+        </div>
+    </div>
+</Layout>

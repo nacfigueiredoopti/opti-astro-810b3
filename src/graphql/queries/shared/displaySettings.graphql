@@ -1,0 +1,4 @@
+fragment DisplaySettings on CompositionDisplaySetting {
+    key
+    value
+}

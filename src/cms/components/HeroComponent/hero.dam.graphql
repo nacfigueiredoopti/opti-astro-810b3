@@ -1,0 +1,18 @@
+fragment Hero on Hero {
+    Video {
+        ...ContentUrl
+        ...ContentReferenceItem
+    }
+    Image {
+        ...ContentUrl
+        ...ContentReferenceItem
+    }
+    Heading
+    SubHeading
+    Body {
+        html
+    }
+    Links {
+        ...LinkCollection
+    }
+}

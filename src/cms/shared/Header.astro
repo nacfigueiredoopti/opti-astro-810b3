@@ -1,0 +1,153 @@
+---
+import { Image as AstroImage } from 'astro:assets';
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import type { SiteSettingsByHostnameQuery, Locales } from '../../../__generated/sdk';
+import type { ContentPayload } from '../../graphql/shared/ContentPayload';
+import { localeToSdkLocale } from '../../lib/locale-helpers';
+import { getClassForLogo } from './siteSettingsHelper';
+import SearchPaletteV2 from './SearchPaletteV2.svelte';
+import ThemePicker from './ThemePicker.astro';
+import LocaleSelector from './LocaleSelector.astro';
+import HeaderDrawerMenuButton from './HeaderDrawerMenuButton.astro';
+import HeaderMobileDropdownNav from './HeaderMobileDropdownNav.astro';
+import HeaderDesktopHorizontalNav from './HeaderDesktopHorizontalNav.astro';
+import HeaderDrawerNavigation from './HeaderDrawerNavigation.astro';
+import type { MenuItemType } from './headerNavigationTypes';
+
+const lang = Astro.currentLocale;
+
+interface Props {
+    siteSettings: SiteSettingsByHostnameQuery;
+    contentPayload?: ContentPayload;
+}
+
+const { siteSettings, contentPayload: providedContentPayload } = Astro.props;
+
+// Use provided contentPayload if available, otherwise create minimal one
+const contentPayload: ContentPayload = providedContentPayload || {
+    ctx: 'view',
+    key: '',
+    ver: '',
+    loc: localeToSdkLocale(lang || 'en') as Locales,
+    preview_token: '',
+    types: [],
+};
+const settings = siteSettings?.SiteSettings?.item;
+
+const topNavStyle = settings?.TopNavStyle || 'standard';
+// Backward compatibility: treat old "drawer" value as "drawer-left"
+const normalizedTopNavStyle = topNavStyle === 'drawer' ? 'drawer-left' : topNavStyle;
+const isDrawerMode = normalizedTopNavStyle === 'drawer-left' || normalizedTopNavStyle === 'drawer-right';
+const isDrawerRight = normalizedTopNavStyle === 'drawer-right';
+const logoUrl = (settings?.Logo as any)?.item?.Url || settings?.Logo?.url?.default || null;
+const logoCss = getClassForLogo(settings?.LogoResolution);
+
+const headerItems = settings?.HeaderLinks as MenuItemType[] | undefined;
+---
+
+<header class="sticky top-0 z-50 bg-gray-50/70 backdrop-blur-sm">
+    <div class="navbar bg-base-100 shadow-sm">
+        <div class="navbar-start">
+            <!-- Navigation: Standard Mobile or Drawer Left -->
+            {!isDrawerMode ? (
+                <HeaderMobileDropdownNav headerItems={headerItems} />
+            ) : !isDrawerRight ? (
+                <HeaderDrawerMenuButton direction="left" />
+            ) : null}
+
+            <!-- Logo -->
+            <a
+                class="block px-8 text-teal-600"
+                href={getRelativeLocaleUrl(lang, '/')}
+            >
+                <span class="sr-only">Home</span>
+                <AstroImage
+                    class:list={[logoCss, "w-full object-contain max-w-full"]}
+                    src={logoUrl ?? '/optimizely-logo.svg'}
+                    alt="Logo"
+                    width=300
+                    height=300
+                />
+            </a>
+        </div>
+
+        <!-- Desktop Navigation: Only show when NOT in drawer mode -->
+        {!isDrawerMode && <HeaderDesktopHorizontalNav headerItems={headerItems} />}
+
+        <!-- Right Side Actions -->
+        <div class="navbar-end" x-data>
+            <!-- Search input -->
+            <div class="relative hidden lg:block">
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search... (⌘K / Ctrl+K)"
+                    class="input input-bordered input-sm w-44 pl-10 pr-4"
+                    readonly
+                    @click="$dispatch('open-command-palette')"
+                />
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    ></path>
+                </svg>
+            </div>
+            <!-- Search button -->
+            <button
+                id="search-button"
+                @click="$dispatch('open-command-palette')"
+                class="btn btn-ghost btn-circle lg:hidden"
+                aria-label="Search"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-5 w-5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                    ></path>
+                </svg>
+            </button>
+            <!-- Locale selector -->
+            <LocaleSelector contentPayload={contentPayload} />
+            <!-- Theme switcher dropdown -->
+            <ThemePicker />
+            <a class="btn" href="https://home.optimizely.com/">Log In</a>
+            <!-- Drawer Right mode: Hamburger button on ALL breakpoints (RIGHT side, after login) -->
+            {isDrawerRight && <HeaderDrawerMenuButton direction="right" />}
+        </div>
+    </div>
+</header>
+
+<!-- Drawer Navigation Component -->
+{isDrawerMode && <HeaderDrawerNavigation headerItems={headerItems} isDrawerRight={isDrawerRight} />}
+
+<!-- Search Palette Component -->
+<SearchPaletteV2 client:load currentLocale={lang} domain={Astro.url.origin} />
+
+<!-- Keyboard shortcut for search -->
+<script is:inline>
+    document.addEventListener('keydown', function(e) {
+        // Cmd+K (Mac) or Ctrl+K (Windows/Linux)
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent('open-command-palette'));
+        }
+    });
+</script>

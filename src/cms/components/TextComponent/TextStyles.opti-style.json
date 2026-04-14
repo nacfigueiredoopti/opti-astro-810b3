@@ -1,0 +1,159 @@
+{
+	"key": "TextStyles",
+	"displayName": "Text Default",
+	"contentType": "Text",
+	"isDefault": true,
+	"settings": {
+		"headingType": {
+			"displayName": "Heading Type",
+			"editor": "select",
+			"sortOrder": 10,
+			"choices": {
+				"h1": {
+					"displayName": "Heading 1",
+					"sortOrder": 10
+				},
+				"h2": {
+					"displayName": "Heading 2",
+					"sortOrder": 20
+				},
+				"h3": {
+					"displayName": "Heading 3",
+					"sortOrder": 30
+				},
+				"h4": {
+					"displayName": "Heading 4",
+					"sortOrder": 40
+				},
+				"h5": {
+					"displayName": "Heading 5",
+					"sortOrder": 50
+				},
+				"h6": {
+					"displayName": "Heading 6",
+					"sortOrder": 60
+				},
+				"plain": {
+					"displayName": "Plain text",
+					"sortOrder": 250
+				}
+			}
+		},
+		"textAlign": {
+			"displayName": "Text align",
+			"editor":"select",
+			"sortOrder": 20,
+			"choices": {
+				"left": {
+					"displayName": "Left",
+					"sortOrder": 10
+				},
+				"center": {
+					"displayName": "Center",
+					"sortOrder": 20
+				},
+				"right": {
+					"displayName": "Right",
+					"sortOrder": 30
+				},
+				"justify": {
+					"displayName": "Justify",
+					"sortOrder": 40
+				}
+			}
+		},
+		"showAs": {
+			"displayName": "Render as",
+			"editor": "select",
+			"sortOrder": 30,
+			"choices": {
+				"heading": {
+					"displayName": "Heading element",
+					"sortOrder": 10
+				},
+				"element": {
+					"displayName": "Basic element",
+					"sortOrder": 20
+				}
+			}
+		},
+		"transform": {
+			"displayName": "Text transform",
+			"editor": "select",
+			"sortOrder": 40,
+			"choices": {
+				"keep": {
+					"displayName": "As entered",
+					"sortOrder": 10
+				},
+				"uppercase": {
+					"displayName": "Uppercase",
+					"sortOrder": 20
+				},
+				"lowercase": {
+					"displayName": "Lowercase",
+					"sortOrder": 30
+				},
+				"capitalize": {
+					"displayName": "Capitalize",
+					"sortOrder": 40
+				}
+			}
+		},
+		"color": {
+			"displayName": "Text color",
+			"editor": "select",
+			"sortOrder": 50,
+			"choices": {
+				"default": {
+					"displayName": "Default",
+					"sortOrder": 10
+				},
+				"primary": {
+					"displayName": "Primary",
+					"sortOrder": 20
+				},
+				"secondary": {
+					"displayName": "Secondary",
+					"sortOrder": 30
+				},
+				"accent": {
+					"displayName": "Accent",
+					"sortOrder": 40
+				},
+				"neutral": {
+					"displayName": "Neutral",
+					"sortOrder": 50
+				},
+				"base100": {
+					"displayName": "Base 100",
+					"sortOrder": 60
+				},
+				"base200": {
+					"displayName": "Base 200",
+					"sortOrder": 70
+				},
+				"base300": {
+					"displayName": "Base 300",
+					"sortOrder": 80
+				},
+				"info": {
+					"displayName": "Info",
+					"sortOrder": 90
+				},
+				"success": {
+					"displayName": "Success",
+					"sortOrder": 100
+				},
+				"warning": {
+					"displayName": "Warning",
+					"sortOrder": 110
+				},
+				"error": {
+					"displayName": "Error",
+					"sortOrder": 120
+				}
+			}
+		}
+	}
+}

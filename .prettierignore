@@ -1,0 +1,6 @@
+.yarn/**
+node_modules/**
+.vscode/**
+.astro/**
+src/services/graphql/__generated/**
+public/communicationinjector.js

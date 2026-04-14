@@ -1,0 +1,106 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import type { Locales } from '../../../__generated/sdk';
+import type { ContentPayload } from '../../graphql/shared/ContentPayload';
+import { localeToSdkLocale } from '../../lib/locale-helpers';
+import '../../styles/global.css';
+
+const lang = Astro.currentLocale || 'en';
+
+// Simple locale-to-message mapping
+const messages: Record<string, { title: string; description: string; heading: string }> = {
+    'en': {
+        title: '404',
+        description: "This page can't be found",
+        heading: '404 Page Not Found!'
+    },
+    'nl': {
+        title: '404',
+        description: 'Deze pagina kan niet worden gevonden',
+        heading: '404 Pagina niet gevonden!'
+    },
+    'nl-BE': {
+        title: '404',
+        description: 'Deze pagina kan niet worden gevonden',
+        heading: '404 Pagina niet gevonden!'
+    },
+    'sv': {
+        title: '404',
+        description: 'Den här sidan kan inte hittas',
+        heading: '404 Sidan hittades inte!'
+    },
+    'no': {
+        title: '404',
+        description: 'Denne siden finnes ikke',
+        heading: '404 Siden ble ikke funnet!'
+    },
+    'fr': {
+        title: '404',
+        description: 'Cette page est introuvable',
+        heading: '404 Page introuvable !'
+    },
+    'fr-CA': {
+        title: '404',
+        description: 'Cette page est introuvable',
+        heading: '404 Page introuvable !'
+    },
+    'es': {
+        title: '404',
+        description: 'No se puede encontrar esta página',
+        heading: '404 ¡Página no encontrada!'
+    },
+    'it': {
+        title: '404',
+        description: 'Questa pagina non può essere trovata',
+        heading: '404 Pagina non trovata!'
+    },
+    'ar': {
+        title: '404',
+        description: 'لا يمكن العثور على هذه الصفحة',
+        heading: '404 الصفحة غير موجودة!'
+    },
+    'zh': {
+        title: '404',
+        description: '找不到此页面',
+        heading: '404 页面未找到！'
+    },
+    'zh-Hans-HK': {
+        title: '404',
+        description: '找不到此页面',
+        heading: '404 页面未找到！'
+    },
+    'de': {
+        title: '404',
+        description: 'Diese Seite kann nicht gefunden werden',
+        heading: '404 Seite nicht gefunden!'
+    },
+    'de-AT': {
+        title: '404',
+        description: 'Diese Seite kann nicht gefunden werden',
+        heading: '404 Seite nicht gefunden!'
+    }
+};
+
+// Get messages for current locale, fallback to English
+const { title, description, heading } = messages[lang] || messages['en'];
+
+const ctx = 'view';
+
+var contentPayload: ContentPayload = {
+    ctx: ctx,
+    key: '',
+    ver: '',
+    loc: localeToSdkLocale(lang) as Locales,
+    preview_token: '',
+    types: [],
+};
+
+---
+
+<Layout
+    title={title}
+    description={description}
+    contentPayload={contentPayload}
+>
+    <h1 class="text-center p-8">{heading}</h1>
+</Layout>

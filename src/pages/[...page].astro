@@ -1,0 +1,132 @@
+---
+import { Locales } from '../../__generated/sdk';
+import Components from '../cms/components/_Components.astro';
+import Experiences from '../cms/experiences/_Experiences.astro';
+import Pages from '../cms/pages/_Pages.astro';
+import { getOptimizelySdk } from '../graphql/getSdk';
+import type { ContentPayload } from '../graphql/shared/ContentPayload';
+import {
+    initFXDebugSession,
+    updateContentInfo,
+    addDebugError
+} from '../optimizely/debug';
+import { resolveContentVariant } from '../optimizely/variant-resolver';
+
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { localeToSdkLocale, fetchContentByPath } from '../lib/locale-helpers';
+
+Astro.response.headers.set('Content-Type', 'text/html; charset=UTF-8');
+
+const lang = Astro.currentLocale || 'en';
+
+// Opti Web variation cookie handling -- cookie name depends on page path
+const rawPath = Astro.url.pathname; 
+let pathSegment;
+if (rawPath === '/') {
+    pathSegment = 'homepage';
+} else {
+    pathSegment = rawPath.replace(/^\//, '').replace(/[\/|-]/g, '_');
+}
+const cookieName = `cmsvariation_${pathSegment}`;
+const pageVariationWeb = Astro.cookies.get(cookieName)?.value || null;
+
+// Initialize debug session
+const debugInfo = initFXDebugSession(Astro.url.toString(), lang);
+
+const ctx = 'view';
+
+var contentPayload: ContentPayload = {
+    ctx: ctx,
+    key: '',
+    ver: '',
+    loc: '',
+    preview_token: '',
+    types: [],
+};
+
+const urlPath = `${Astro.url.pathname.replace(/\/$/, '')}/`;
+const urlBase = Astro.url.origin;
+
+// Fetch content in the current locale (Astro's i18n handles fallback via rewrites)
+contentPayload.loc = localeToSdkLocale(lang) as Locales;
+
+const defaultResult = await fetchContentByPath(
+    getOptimizelySdk,
+    contentPayload,
+    urlBase,
+    urlPath,
+    false, // No debug logs for default content fetch
+    pageVariationWeb
+);
+
+if (!defaultResult.found) {
+    addDebugError(debugInfo, 'No content found for URL in current locale');
+    return Astro.rewrite(getRelativeLocaleUrl(lang, '/404'));
+}
+
+const defaultItem = defaultResult.contentResponse._Content.item;
+
+updateContentInfo(debugInfo, {
+    defaultKey: defaultItem?._metadata?.key
+});
+
+// Resolve content variant using FX SDK
+const variantResult = await resolveContentVariant(
+    Astro,
+    defaultItem,
+    contentPayload,
+    getOptimizelySdk,
+    urlBase,
+    urlPath,
+    lang,
+    defaultResult,
+    debugInfo
+);
+
+const contentByPathResponse = variantResult.contentResponse;
+const item = contentByPathResponse._Content.item;
+
+// Update final debug info
+updateContentInfo(debugInfo, { 
+    finalContentKey: item?._metadata?.key,
+    isVariantContent: variantResult.isVariantContent 
+});
+
+if (!item?._metadata) {
+    throw new Error('Metadata is missing in the content item');
+}
+
+// Always fetch by ID to get the full content data
+const contentByIdResponse = await getOptimizelySdk(contentPayload).contentById({
+    key: item._metadata.key || '',
+    ver: item._metadata.version || '',
+    loc: localeToSdkLocale(item._metadata.locale) as Locales,
+});
+
+contentPayload = {
+    ctx: ctx,
+    key: item._metadata.key || '',
+    ver: item._metadata.version || '',
+    loc: localeToSdkLocale(item._metadata.locale) as Locales,
+    preview_token: '',
+    types: (contentByIdResponse?._Content?.item?._metadata?.types as string[]) || [],
+};
+const isComponentType = contentPayload.types.includes('_Component');
+const isExperienceType = contentPayload.types.includes('_Experience');
+const isPageType =
+    contentPayload.types.includes('_Page') && isExperienceType === false;
+
+if (isPageType && contentPayload.types.includes('FolderPage')) {
+    return Astro.rewrite(getRelativeLocaleUrl(lang, '/404'));
+}
+---
+
+<>
+    {
+        isComponentType && (
+            <Components data={contentPayload} contentPayload={contentPayload} />
+        )
+    }
+    {isExperienceType && <Experiences data={contentPayload} />}
+    {isPageType && <Pages data={contentPayload} />}
+</>

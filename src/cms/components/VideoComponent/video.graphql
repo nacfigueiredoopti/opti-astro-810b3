@@ -1,0 +1,8 @@
+fragment Video on Video {
+    Video {
+        ...ContentUrl
+    }
+    VideoPosterImage {
+        ...ContentUrl
+    }
+}

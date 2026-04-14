@@ -1,0 +1,89 @@
+query siteSettingsByHostname($domain: String!, $locale: [Locales]!) {
+    SiteSettings(
+        locale: $locale
+        where: { SiteDomain: { eq: $domain } }
+        orderBy: { _metadata: { lastModified: DESC } }
+        limit: 1
+    ) {
+        item {
+            SiteDomain
+            LogoResolution
+            Logo {
+                ...ContentUrl
+                ...ContentReferenceItem
+            }
+            FooterText
+            TopNavStyle
+            HeaderLinks {
+                ... on MenuItem {
+                    Link {
+                        text
+                        url {
+                            default
+                        }
+                    }
+                    LinkText
+                    SubMenuItems {
+                        ... on MenuItem {
+                            Link {
+                                text
+                                url {
+                                    default
+                                }
+                            }
+                            LinkText
+                        }
+                    }
+                }
+                ... on _Experience {
+                    Link: _metadata {
+                        text: displayName
+                        url {
+                            default
+                        }
+                    }
+                }
+                ... on _Page {
+                    Link: _metadata {
+                        text: displayName
+                        url {
+                            default
+                        }
+                    }
+                }
+            }
+            FooterLinks {
+                ... on MenuItem {
+                    Link {
+                        text
+                        url {
+                            default
+                        }
+                    }
+                }
+                ... on _Experience {
+                    Link: _metadata {
+                        text: displayName
+                        url {
+                            default
+                        }
+                    }
+                }
+                ... on _Page {
+                    Link: _metadata {
+                        text: displayName
+                        url {
+                            default
+                        }
+                    }
+                }
+            }
+            SocialFacebook
+            SocialInstagram
+            SocialTwitter
+            SocialTikTok
+            SocialGitHub
+            OptiWebProjectId
+        }
+    }
+}

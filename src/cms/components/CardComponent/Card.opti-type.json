@@ -1,0 +1,113 @@
+{
+	"key": "Card",
+	"displayName": "Card",
+	"description": "Versatile card for rich info: heading, text, image, links, and various display layouts.",
+	"baseType": "component",
+	"sortOrder": 0,
+	"mayContainTypes": [],
+	"mediaFileExtensions": [],
+	"compositionBehaviors": [
+		"sectionEnabled",
+		"elementEnabled"
+	],
+	"properties": {
+		"Heading": {
+			"type": "string",
+			"displayName": "Heading",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 10,
+			"indexingType": "searchable",
+			"editorSettings": {}
+		},
+		"SubHeading": {
+			"type": "string",
+			"displayName": "Sub Heading",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 20,
+			"indexingType": "searchable",
+			"editorSettings": {}
+		},
+		"Body": {
+			"type": "string",
+			"format": "html",
+			"displayName": "Body",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 30,
+			"indexingType": "searchable",
+			"editorSettings": {}
+		},
+		"DisplayAs": {
+			"type": "string",
+			"format": "selectOne",
+			"displayName": "Display As",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 40,
+			"editorSettings": {},
+			"enum": {
+				"values": [
+					{
+						"displayName": "Text Below Card",
+						"value": "textBelowCard"
+					},
+					{
+						"displayName": "Text Above Card",
+						"value": "textAboveCard"
+					},
+					{
+						"displayName": "Text On Left",
+						"value": "textOnLeft"
+					},
+					{
+						"displayName": "Text On Right",
+						"value": "textOnRight"
+					},
+					{
+						"displayName": "Hover Overlay",
+						"value": "hover"
+					}
+				]
+			}
+		},
+		"Asset": {
+			"type": "contentReference",
+			"displayName": "Asset",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 50,
+			"editorSettings": {},
+			"allowedTypes": [
+				"Image"
+			],
+			"restrictedTypes": []
+		},
+		"Links": {
+			"type": "array",
+			"format": "LinkCollection",
+			"displayName": "Links",
+			"description": "",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 60,
+			"editorSettings": {},
+			"items": {
+				"type": "component",
+				"contentType": "link"
+			}
+		}
+	}
+}

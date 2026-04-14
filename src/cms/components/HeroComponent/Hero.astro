@@ -1,0 +1,133 @@
+---
+import { Image as AstroImage } from 'astro:assets';
+import type {
+    DisplaySettingsFragment,
+    HeroFragment,
+} from '../../../../__generated/sdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import { getDictionaryFromDisplaySettings } from '../../../graphql/shared/displaySettingsHelpers';
+import { getHeroStyles } from './HeroStyling';
+import { getGlobalStyles } from '../../shared/globalStylesHelper';
+import LinkButton from '../ButtonComponent/LinkButton.astro';
+import { getButtonStyles } from '../ButtonComponent/ButtonStyling';
+import { isEditContext, getLink } from '../../shared/utils.ts';
+import type { ButtonLinkData } from '../../shared/utils.ts';
+
+const isCmsEdit = isEditContext(Astro.url);
+const currentDomain = Astro.url.origin;
+
+export interface Props {
+    key: string;
+    data: HeroFragment;
+    displaySettings: DisplaySettingsFragment[];
+    contentPayload: ContentPayload;
+}
+const { key, data, displaySettings } = Astro.props as Props;
+const heroButtonStyles = getButtonStyles(displaySettings, false); // false: button type defined here
+
+const imageUrl = (data?.Image as any)?.item?.Url || data?.Image?.url?.default || null;
+const imageAltText = (data.Image as any)?.item?.AltText || (data.Image as any)?.item?._metadata?.displayName || data.Heading || '';
+
+const videoUrl = (data?.Video as any)?.item?.Url || data?.Video?.url?.default || null;
+const hasVideo = videoUrl !== null;
+
+const { justifyClass, backgroundOpacityClass, textClasses, heightClass, imageFitClass } =
+    getHeroStyles(displaySettings);
+const globalStyles = getGlobalStyles(displaySettings);
+
+// Get hover effect settings
+const dictionary = getDictionaryFromDisplaySettings(displaySettings);
+const hoverEffect = dictionary['hoverEffect'] || 'zoom_subtle';
+
+// Build hover effect classes
+const hoverClasses = {
+    'transition-transform duration-300 hover:scale-105 overflow-hidden': hoverEffect === 'zoom',
+    'transition-transform duration-300 hover:scale-[1.02] overflow-hidden': hoverEffect === 'zoom_subtle',
+};
+
+const componentClass = 'component-hero';
+---
+
+<section
+    class="relative flex w-full items-center"
+    class:list={[justifyClass, heightClass, globalStyles, hoverClasses, componentClass]}
+    data-epi-block-id={isCmsEdit && key || undefined}    
+>
+    {
+        hasVideo && videoUrl && (
+            <video
+                autoplay
+                loop
+                muted
+                playsinline
+                class="absolute inset-0 h-full w-full object-cover"
+                id="hero-video"
+            >
+                <source src={videoUrl} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
+        )
+    }
+
+    {
+        !hasVideo && imageUrl && (
+            <AstroImage
+                src={imageUrl}
+                alt={imageAltText}
+                class={`absolute inset-0 h-full w-full ${imageFitClass}`}
+                id="hero-image"
+                inferSize={true}
+            />
+        )
+    }
+
+    <!-- Dark Overlay for Better Readability -->
+    <div class="absolute inset-0" class:list={backgroundOpacityClass}></div>
+
+    <!-- Content -->
+    <div class="relative z-10 px-6" class:list={textClasses}>
+        <h1 class="text-5xl font-bold md:text-6xl" class:list={textClasses}>{data?.Heading}</h1>
+        <p class="mx-auto mt-4 text-xl" class:list={textClasses}>
+            {data?.SubHeading}
+        </p>
+        <p
+            class="mx-auto mt-4 max-w-2xl text-base opacity-80"
+            class:list={textClasses}
+            set:html={data.Body?.html}
+        />
+
+        <!-- Buttons -->
+        <div class="mt-6 flex space-x-4" class:list={justifyClass}>
+            {
+                data?.Links?.map((link, i) => {
+                    const buttonLink = getLink(link as ButtonLinkData, currentDomain);
+                    const newWindow = link?.target === '_blank';
+                    const buttonType: string[] = [""];
+                    switch (i) {
+                        case 0:
+                            buttonType.push('btn-primary');
+                            break;
+                        case 1:
+                            buttonType.push('btn-secondary');
+                            break;
+                        case 2:
+                            buttonType.push('btn-accent');
+                            break;
+                        case 3:
+                            buttonType.push('btn-info');
+                            break;
+                        case 4:
+                            buttonType.push('');
+                            break;
+                        default:
+                            buttonType.push('btn-primary');
+                            break;
+                    }
+                    return (
+                        <LinkButton cssClasses={[buttonType, heroButtonStyles]} link={buttonLink} newWindow={newWindow}>{link?.text}</LinkButton>
+                    );
+                })
+            }
+        </div>
+    </div>
+</section>

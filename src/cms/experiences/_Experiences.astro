@@ -1,0 +1,66 @@
+---
+import type { BlankExperience, Locales } from '../../../__generated/sdk';
+import { getOptimizelySdk } from '../../graphql/getSdk';
+import type { ContentPayload } from '../../graphql/shared/ContentPayload';
+import Layout from '../../layouts/Layout.astro';
+import Section from '../compositions/Section/Section.astro';
+const previewPayload = Astro.props.data as ContentPayload;
+
+const optiResponse = await getOptimizelySdk(previewPayload).getExperience({
+    key: previewPayload.key,
+    ver: previewPayload.ver,
+    loc: previewPayload.loc as Locales,
+});
+
+const experience = optiResponse?._Experience?.item;
+if (!experience) {
+    throw new Error('No experience found');
+}
+let metaTitle = '',
+    metaDescription = '',
+    metaIndexing = false,
+    metaGraphType = 'website',
+    extPreviewEnabled = false;
+if (experience?._metadata?.types?.includes('BlankExperience')) {
+    const blankExperience = experience as BlankExperience;
+    metaTitle =
+        blankExperience.BlankExperienceSeoSettings?.MetaTitle ||
+        experience?._metadata?.displayName ||
+        '';
+    metaDescription =
+        blankExperience.BlankExperienceSeoSettings?.MetaDescription || '';
+    metaIndexing =
+        blankExperience.BlankExperienceSeoSettings?.Indexing || false;
+    metaGraphType =
+        blankExperience.BlankExperienceSeoSettings?.GraphType || 'website';
+    extPreviewEnabled =
+        blankExperience.PageAdminSettings?.EnableExternalPreview ?? false;
+}
+
+const defaultUrl = experience?._metadata?.url?.default || '';
+const hierarchicalUrl =
+    experience?._metadata?.url?.type === 'SIMPLE'
+        ? experience?._metadata?.url?.hierarchical
+        : '';
+        
+const pageClass = 'page-experience';
+---
+
+<Layout
+    title={metaTitle}
+    description={metaDescription}
+    indexing={metaIndexing}
+    graphtype={metaGraphType}
+    contentPayload={previewPayload}
+    defaultUrl={defaultUrl}
+    hierarchicalUrl={hierarchicalUrl ?? ''}
+    extPreviewEnabled={extPreviewEnabled}
+>
+    <div class={`vb:outline relative w-full flex-1 ${pageClass}`}>
+        {
+            experience?.composition?.grids?.map((grid: any) => (
+                <Section contentPayload={previewPayload} grid={grid} />
+            ))
+        }
+    </div>
+</Layout>

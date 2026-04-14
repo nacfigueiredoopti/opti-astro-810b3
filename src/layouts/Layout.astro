@@ -1,0 +1,166 @@
+---
+import { Font } from 'astro:assets';
+import { ASTRO_TRANSITIONS_ENABLED } from 'astro:env/client';
+import { ClientRouter } from 'astro:transitions';
+
+import type { Locales } from '../../__generated/sdk';
+import Footer from '../cms/shared/Footer.astro';
+import Header from '../cms/shared/Header.astro';
+import SiteStyles from '../cms/components/SiteStylesComponent/SiteStyles.astro';
+import { getSiteFont } from '../cms/shared/siteStylesHelper';
+import { EXTERNAL_PREVIEW_ENABLED, OPTIMIZELY_DATA_PLATFORM_PRIVATE_KEY } from 'astro:env/server';
+import ExtPreviewLinkBanner from '../cms/shared/ExtPreviewLink/ExtPreviewLinkBanner.astro';
+import DataPlatform from '../cms/shared/DataPlatform/DataPlatform.astro';
+// import { getOdpScript } from '../cms/shared/DataPlatform/dataPlatform.ts';
+import { isDraftContent, isEditContext } from '../cms/shared/utils.ts';
+import { getOptimizelySdk } from '../graphql/getSdk';
+import type { ContentPayload } from '../graphql/shared/ContentPayload';
+import '../styles/global.css';
+import 'aos/dist/aos.css';
+
+interface Props {
+    title: string;
+    description: string;
+    graphtype?: string;
+    indexing?: boolean;
+    contentPayload: ContentPayload;
+    defaultUrl?: string;
+    hierarchicalUrl?: string;
+    extPreviewEnabled?: boolean;
+}
+
+const {
+    title,
+    description,
+    graphtype = 'website',
+    indexing = false,
+    contentPayload,
+    defaultUrl,
+    hierarchicalUrl,
+    extPreviewEnabled,
+} = Astro.props;
+const ctx = contentPayload.ctx || 'view';
+
+const isCmsEdit = isEditContext(Astro.url);
+
+const contentVersion = contentPayload.ver || '';
+const isDraft = EXTERNAL_PREVIEW_ENABLED && extPreviewEnabled && await isDraftContent(contentVersion);
+
+const { host } = Astro.url;
+const siteSettings = await getOptimizelySdk(
+    contentPayload
+).siteSettingsByHostname({
+    domain: host,
+    locale: [contentPayload.loc as Locales],
+});
+
+const optiWebProjectId = siteSettings?.SiteSettings?.item?.OptiWebProjectId || null;
+const pageVariationWeb = Astro.url.searchParams.get('var') || null;
+
+const odpEnabled = !!OPTIMIZELY_DATA_PLATFORM_PRIVATE_KEY;
+const odpPublicKey = odpEnabled && OPTIMIZELY_DATA_PLATFORM_PRIVATE_KEY?.split('.')[0];
+// const odpScript = odpPublicKey && getOdpScript(odpPublicKey);
+
+const siteStyles = await getOptimizelySdk(contentPayload).siteStylesByHostname({
+    domain: host,
+    locale: [contentPayload.loc as Locales],
+});
+
+const siteFont = getSiteFont(siteStyles?.SiteStyles?.item);
+
+const cssFileMeta = siteStyles?.SiteStyles?.item?.cssFile?._metadata;
+const externalStylesUrl = cssFileMeta?.url?.default && cssFileMeta?.lastModified
+    ? `${cssFileMeta.url.default}?${new Date(cssFileMeta.lastModified).getTime()}`
+    : null;
+
+const canonicalUrl = Astro.url.origin + hierarchicalUrl;
+
+const graphType = graphtype !== '-' ? graphtype : 'website';
+const contentKey = contentPayload.key || '';
+
+const rtlLangs = ['ar', 'he', 'fa', 'ur'];
+const currentLang = contentPayload.loc || 'en';
+const isRtl = rtlLangs.includes(currentLang.split('-')[0]);
+---
+
+<!doctype html>
+<html data-theme="light" lang={currentLang} {...(isRtl ? { dir: "rtl" } : {})}>
+    <head>
+        <meta charset="UTF-8" />
+        {!isCmsEdit && optiWebProjectId && (
+            <link rel="preload" href={`//cdn.optimizely.com/js/${optiWebProjectId}.js`} as="script" />
+            <link rel="preconnect" href="//logx.optimizely.com" />
+            <script src={`https://cdn.optimizely.com/js/${optiWebProjectId}.js`} />
+        )}
+        {odpEnabled && (
+            <DataPlatform odpPublicKey={odpPublicKey} />
+        )}
+        {siteStyles && <SiteStyles siteStyles={siteStyles} />}
+        {siteFont && <Font cssVariable={siteFont} preload />}
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        { externalStylesUrl && (
+            <>
+                <link rel="preload" href={externalStylesUrl} as="style" />
+                <link rel="stylesheet" href={externalStylesUrl} />
+            </>
+        )}
+        <meta name="generator" content={Astro.generator} />
+        {indexing && <meta name="robots" content="noindex, nofollow" />}
+        {graphType && <meta property="og:type" content={graphType} />}
+        {hierarchicalUrl && <link rel="canonical" href={canonicalUrl} />}
+        <title>{title}</title>
+        {ASTRO_TRANSITIONS_ENABLED && <ClientRouter />}
+    </head>
+    <body data-content-key={contentKey}>
+        <script is:inline src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+        <script is:inline>
+            document.addEventListener('astro:page-load', () => {
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-out-cubic',
+                    once: false,
+                    offset: 50,
+                });
+            });
+        </script>
+        {
+            EXTERNAL_PREVIEW_ENABLED && extPreviewEnabled && isDraft 
+                && (ctx === 'edit' || ctx === 'ext_preview') && (
+                <ExtPreviewLinkBanner
+                    contentPayload={contentPayload}
+                    pageUrl={defaultUrl}
+                />
+            )
+        }
+        <Header siteSettings={siteSettings} contentPayload={contentPayload} />
+        <slot />
+        <Footer siteSettings={siteSettings} />
+
+        {
+            ASTRO_TRANSITIONS_ENABLED && !isCmsEdit && optiWebProjectId && (
+                <script is:inline>
+                    document.addEventListener('astro:page-load', () => {
+                        // The Optimizely snippet creates a global array `window.optimizely`.
+                        // We push events to this array to signal page changes, which is the
+                        // standard practice for Single-Page Applications.
+                        // See: https://docs.developers.optimizely.com/web-experimentation/docs/single-page-applications-and-dynamic-websites
+                        if (window.optimizely) {
+                            window.optimizely.push({ type: 'activate' });
+                        }
+                    });
+                </script>
+            )
+        }
+        <script>
+            import Alpine from 'alpinejs';
+
+            // Make Alpine available globally
+            window.Alpine = Alpine;
+
+            // Start Alpine
+            Alpine.start();
+        </script>
+    </body>
+</html>

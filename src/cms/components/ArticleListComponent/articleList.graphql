@@ -1,0 +1,11 @@
+fragment ArticleList on ArticleList {
+    Title
+    NumberOfArticles
+    ArticleRoot {
+        url {
+            default
+            base
+        }
+    }
+    IncludeAllSites
+}

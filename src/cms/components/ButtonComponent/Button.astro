@@ -1,0 +1,53 @@
+---
+import type {
+    ButtonFragment,
+    DisplaySettingsFragment,
+} from '../../../../__generated/sdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import LinkButton from './LinkButton.astro';
+import { getButtonStyles } from './ButtonStyling';
+import { getLoginButtonStyles } from './LoginButtonStyling';
+import { isEditContext, getLink } from '../../shared/utils.ts';
+import type { ButtonLinkData } from '../../shared/utils.ts';
+
+const isCmsEdit = isEditContext(Astro.url);
+
+export interface Props {
+    key: string;
+    data: ButtonFragment;
+    displaySettings: DisplaySettingsFragment[];
+    displayTemplateKey: string;
+    contentPayload: ContentPayload;
+}
+const { key, data, displaySettings, displayTemplateKey, contentPayload } = Astro.props as Props;
+
+const isDefaultButton = displayTemplateKey === 'DefaultButton';
+const isLoginButton = displayTemplateKey === 'LoginButton';
+
+let btnStyles: string | string[] | {} = '';
+let loginButtonSlot: string = '';
+
+if(isLoginButton) {
+    const { btnStyles: loginBtnStyles, loginButtonSlot: loginBtnSlot } = getLoginButtonStyles(displaySettings);
+    btnStyles = loginBtnStyles;
+    loginButtonSlot = loginBtnSlot;
+} else {
+    btnStyles = getButtonStyles(displaySettings);
+}
+
+const currentDomain = Astro.url.origin;
+
+const buttonLink = getLink(data?.ButtonLink as ButtonLinkData, currentDomain);
+const newWindow = data?.ButtonLink?.target === '_blank';
+const componentClass = 'component-button';
+---
+{ isDefaultButton &&
+    <span data-epi-block-id={isCmsEdit && key || undefined} class={componentClass}>
+        <LinkButton cssClasses={btnStyles} link={buttonLink} newWindow={newWindow}>{data?.ButtonLabel}</LinkButton>
+    </span>
+}
+{ isLoginButton &&
+    <span data-epi-block-id={isCmsEdit && key || undefined} class={componentClass}>
+        <LinkButton cssClasses={btnStyles} link={buttonLink} newWindow={newWindow}><Fragment set:html={loginButtonSlot}/></LinkButton>
+    </span>
+}

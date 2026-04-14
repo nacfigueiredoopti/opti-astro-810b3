@@ -1,0 +1,15 @@
+fragment Card on Card {
+    DisplayAs
+    Heading
+    SubHeading
+    Body {
+        html
+    }
+    Asset {
+        ...ContentUrl
+        ...ContentReferenceItem
+    }
+    Links {
+        ...LinkCollection
+    }
+}

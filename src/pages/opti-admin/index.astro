@@ -1,0 +1,27 @@
+---
+import AdminApp from './_AdminApp.svelte';
+import AdminLayout from './layouts/AdminLayout.astro';
+
+// Get view parameter from URL
+const initialView = Astro.url.searchParams.get('view') || 'dashboard';
+
+// Get CMS URL from environment
+const cmsUrl = import.meta.env.OPTIMIZELY_CMS_URL || process.env.OPTIMIZELY_CMS_URL;
+
+// Determine page title based on view
+const pageTitles: Record<string, string> = {
+  'dashboard': 'Dashboard',
+  'synonyms': 'Synonyms Manager',
+  'pinned': 'Pinned Results Manager',
+  'cms-sync': 'CMS Sync',
+  'style-manager': 'Style Manager'
+};
+
+const pageTitle = pageTitles[initialView] || 'Dashboard';
+
+export const prerender = false;
+---
+
+<AdminLayout title={pageTitle}>
+  <AdminApp {cmsUrl} {initialView} client:load />
+</AdminLayout>

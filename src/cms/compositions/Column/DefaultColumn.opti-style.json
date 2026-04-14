@@ -1,0 +1,375 @@
+{
+    "key": "DefaultColumn",
+    "displayName": "Column Default",
+    "nodeType": "column",
+    "isDefault": true,
+    "settings": {
+        "contentSpacing": {
+            "displayName": "Content Spacing",
+            "editor": "select",
+            "sortOrder": 10,
+            "choices": {
+                "none": {
+                    "displayName": "None",
+                    "sortOrder": 10
+                },
+                "small": {
+                    "displayName": "Small",
+                    "sortOrder": 20
+                },
+                "medium": {
+                    "displayName": "Medium",
+                    "sortOrder": 30
+                },
+                "large": {
+                    "displayName": "Large",
+                    "sortOrder": 40
+                },
+                "xl": {
+                    "displayName": "Extra Large",
+                    "sortOrder": 50
+                },
+                "xxl": {
+                    "displayName": "Extra Extra Large",
+                    "sortOrder": 60
+                }
+            }
+        },
+        "justifyContent": {
+            "displayName": "Justify content",
+            "editor": "select",
+            "sortOrder": 20,
+            "choices": {
+                "start": {
+                    "displayName": "Start",
+                    "sortOrder": 10
+                },
+                "center": {
+                    "displayName": "Center",
+                    "sortOrder": 20
+                },
+                "end": {
+                    "displayName": "End",
+                    "sortOrder": 30
+                }
+            }
+        },
+        "alignContent": {
+            "displayName": "Align content",
+            "editor": "select",
+            "sortOrder": 30,
+            "choices": {
+                "start": {
+                    "displayName": "Start",
+                    "sortOrder": 10
+                },
+                "center": {
+                    "displayName": "Center",
+                    "sortOrder": 20
+                },
+                "end": {
+                    "displayName": "End",
+                    "sortOrder": 30
+                }
+            }
+        },
+        "showFrom": {
+            "displayName": "Show on",
+            "editor": "select",
+            "sortOrder": 40,
+            "choices": {
+                "always": {
+                    "displayName": "All screen sizes",
+                    "sortOrder": 10
+                },
+                "fromSmall": {
+                    "displayName": "Small and up",
+                    "sortOrder": 20
+                },
+                "fromMedium": {
+                    "displayName": "Medium and up",
+                    "sortOrder": 30
+                },
+                "fromLarge": {
+                    "displayName": "Large and up",
+                    "sortOrder": 40
+                }
+            }
+        },
+        "minWidth": {
+            "displayName": "Minimal width",
+            "editor": "select",
+            "sortOrder": 50,
+            "choices": {
+                "auto": {
+                    "displayName": "Automatic",
+                    "sortOrder": 10
+                },
+                "small": {
+                    "displayName": "Small",
+                    "sortOrder": 20
+                },
+                "medium": {
+                    "displayName": "Medium",
+                    "sortOrder": 30
+                },
+                "large": {
+                    "displayName": "Large",
+                    "sortOrder": 40
+                }
+            }
+        },
+        "overflow": {
+            "displayName": "Overflow (if available width is less then minimal)",
+            "editor": "select",
+            "sortOrder": 60,
+            "choices": {
+                "full": {
+                    "displayName": "Overflow both",
+                    "sortOrder": 10
+                },
+                "clip": {
+                    "displayName": "None (hide content)",
+                    "sortOrder": 20
+                },
+                "left": {
+                    "displayName": "Overflow left",
+                    "sortOrder": 30
+                },
+                "right": {
+                    "displayName": "Overflow right",
+                    "sortOrder": 40
+                }
+            }
+        },
+        "gridSpan": {
+            "displayName": "Grid Span (out of 12)",
+            "editor": "select",
+            "sortOrder": 5,
+            "choices": {
+                "auto": {
+                    "displayName": "Auto",
+                    "sortOrder": 5
+                },
+                "span1": {
+                    "displayName": "1 Column",
+                    "sortOrder": 10
+                },
+                "span2": {
+                    "displayName": "2 Columns",
+                    "sortOrder": 20
+                },
+                "span3": {
+                    "displayName": "3 Columns",
+                    "sortOrder": 30
+                },
+                "span4": {
+                    "displayName": "4 Columns",
+                    "sortOrder": 40
+                },
+                "span5": {
+                    "displayName": "5 Columns",
+                    "sortOrder": 50
+                },
+                "span6": {
+                    "displayName": "6 Columns",
+                    "sortOrder": 60
+                },
+                "span7": {
+                    "displayName": "7 Columns",
+                    "sortOrder": 70
+                },
+                "span8": {
+                    "displayName": "8 Columns",
+                    "sortOrder": 80
+                },
+                "span9": {
+                    "displayName": "9 Columns",
+                    "sortOrder": 90
+                },
+                "span10": {
+                    "displayName": "10 Columns",
+                    "sortOrder": 100
+                },
+                "span11": {
+                    "displayName": "11 Columns",
+                    "sortOrder": 110
+                },
+                "span12": {
+                    "displayName": "12 Columns (Full)",
+                    "sortOrder": 120
+                }
+            }
+        },
+        "backgroundColor": {
+            "displayName": "Background Color",
+            "editor": "select",
+            "sortOrder": 70,
+            "choices": {
+                "transparent": {
+                    "displayName": "Transparent",
+                    "sortOrder": 5
+                },
+                "base_100": {
+                    "displayName": "Base 100",
+                    "sortOrder": 10
+                },
+                "base_200": {
+                    "displayName": "Base 200",
+                    "sortOrder": 20
+                },
+                "base_300": {
+                    "displayName": "Base 300",
+                    "sortOrder": 30
+                },
+                "primary": {
+                    "displayName": "Primary",
+                    "sortOrder": 40
+                },
+                "secondary": {
+                    "displayName": "Secondary",
+                    "sortOrder": 50
+                },
+                "accent": {
+                    "displayName": "Accent",
+                    "sortOrder": 60
+                },
+                "neutral": {
+                    "displayName": "Neutral",
+                    "sortOrder": 70
+                },
+                "info": {
+                    "displayName": "Info",
+                    "sortOrder": 80
+                },
+                "success": {
+                    "displayName": "Success",
+                    "sortOrder": 90
+                },
+                "warning": {
+                    "displayName": "Warning",
+                    "sortOrder": 100
+                },
+                "error": {
+                    "displayName": "Error",
+                    "sortOrder": 110
+                }
+            }
+        },
+        "aosAnimation": {
+            "displayName": "Column Animation",
+            "editor": "select",
+            "sortOrder": 80,
+            "choices": {
+                "none": {
+                    "displayName": "None (Default)",
+                    "sortOrder": 10
+                },
+                "fade_up": {
+                    "displayName": "Fade Up",
+                    "sortOrder": 20
+                },
+                "fade_down": {
+                    "displayName": "Fade Down",
+                    "sortOrder": 30
+                },
+                "fade_left": {
+                    "displayName": "Fade Left",
+                    "sortOrder": 40
+                },
+                "fade_right": {
+                    "displayName": "Fade Right",
+                    "sortOrder": 50
+                },
+                "fade_up_right": {
+                    "displayName": "Fade Up Right",
+                    "sortOrder": 60
+                },
+                "fade_up_left": {
+                    "displayName": "Fade Up Left",
+                    "sortOrder": 70
+                },
+                "fade_down_right": {
+                    "displayName": "Fade Down Right",
+                    "sortOrder": 80
+                },
+                "fade_down_left": {
+                    "displayName": "Fade Down Left",
+                    "sortOrder": 90
+                },
+                "flip_left": {
+                    "displayName": "Flip Left",
+                    "sortOrder": 100
+                },
+                "flip_right": {
+                    "displayName": "Flip Right",
+                    "sortOrder": 110
+                },
+                "flip_up": {
+                    "displayName": "Flip Up",
+                    "sortOrder": 120
+                },
+                "flip_down": {
+                    "displayName": "Flip Down",
+                    "sortOrder": 130
+                },
+                "slide_left": {
+                    "displayName": "Slide Left",
+                    "sortOrder": 140
+                },
+                "slide_right": {
+                    "displayName": "Slide Right",
+                    "sortOrder": 150
+                },
+                "slide_up": {
+                    "displayName": "Slide Up",
+                    "sortOrder": 160
+                },
+                "slide_down": {
+                    "displayName": "Slide Down",
+                    "sortOrder": 170
+                },
+                "zoom_in": {
+                    "displayName": "Zoom In",
+                    "sortOrder": 180
+                },
+                "zoom_in_up": {
+                    "displayName": "Zoom In Up",
+                    "sortOrder": 190
+                },
+                "zoom_in_down": {
+                    "displayName": "Zoom In Down",
+                    "sortOrder": 200
+                },
+                "zoom_in_left": {
+                    "displayName": "Zoom In Left",
+                    "sortOrder": 210
+                },
+                "zoom_in_right": {
+                    "displayName": "Zoom In Right",
+                    "sortOrder": 220
+                },
+                "zoom_out": {
+                    "displayName": "Zoom Out",
+                    "sortOrder": 230
+                },
+                "zoom_out_up": {
+                    "displayName": "Zoom Out Up",
+                    "sortOrder": 240
+                },
+                "zoom_out_down": {
+                    "displayName": "Zoom Out Down",
+                    "sortOrder": 250
+                },
+                "zoom_out_left": {
+                    "displayName": "Zoom Out Left",
+                    "sortOrder": 260
+                },
+                "zoom_out_right": {
+                    "displayName": "Zoom Out Right",
+                    "sortOrder": 270
+                }
+            }
+        }
+    }
+}

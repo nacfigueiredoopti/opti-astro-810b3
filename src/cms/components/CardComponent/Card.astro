@@ -1,0 +1,86 @@
+---
+import type {
+CardFragment,
+DisplaySettingsFragment,
+} from '../../../../__generated/sdk';
+
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import { getDictionaryFromDisplaySettings } from '../../../graphql/shared/displaySettingsHelpers';
+import { getAssetWidthClass, getContentWidthClass } from './CardHelper';
+import { getAssetVerticalAlignClass, getContentVerticalAlignClass } from './CardStyling';
+import { getGlobalStyles } from '../../shared/globalStylesHelper';
+import Asset from './Asset.astro';
+import Content from './Content.astro';
+import Wrapper from './Wrapper.astro';
+import { isEditContext } from '../../shared/utils.ts';
+
+const isCmsEdit = isEditContext(Astro.url);
+
+export interface Props {
+    key: string;
+    data: CardFragment;
+    displaySettings: DisplaySettingsFragment[];
+    displayTemplateKey: string;
+    contentPayload: ContentPayload;
+}
+const { key, data, displaySettings, displayTemplateKey, contentPayload } =
+    Astro.props as Props;
+
+const dictionary = getDictionaryFromDisplaySettings(displaySettings);
+const { DisplayAs } = data;
+const assetWidthClass = getAssetWidthClass(dictionary);
+const contentWidthClass = getContentWidthClass(dictionary);
+const assetVerticalAlignClass = getAssetVerticalAlignClass(displaySettings);
+const contentVerticalAlignClass = getContentVerticalAlignClass(displaySettings);
+const globalStyles = getGlobalStyles(displaySettings);
+
+// Get container width setting
+const containerWidth = dictionary['containerWidth'] || 'default';
+const isFullSplit = containerWidth === 'fullSplit';
+
+// Build hover effect classes for the entire card (but not for hover overlay mode)
+const isHoverOverlayMode = DisplayAs === 'hover';
+const hoverEffect = dictionary['hoverEffect'] || 'zoom_subtle';
+
+const cardHoverClasses = {
+    'transition-transform duration-300 hover:scale-105': hoverEffect === 'zoom' && !isHoverOverlayMode,
+    'transition-transform duration-300 hover:scale-[1.005]': hoverEffect === 'zoom_subtle' && !isHoverOverlayMode,
+    'overflow-hidden': true, // Always apply overflow-hidden for smooth scaling
+};
+
+// Extract active hover classes and add negative margins for full split
+const activeCardHoverClasses = Object.keys(cardHoverClasses).filter(key => cardHoverClasses[key]);
+const cardContainerClasses = isFullSplit 
+    ? [...activeCardHoverClasses, '-m-2', 'sm:-m-3', 'md:-m-4']
+    : activeCardHoverClasses;
+
+const componentClass = 'component-card';
+---
+
+<span data-epi-block-id={isCmsEdit && key || undefined} class:list={[componentClass]}>
+    <div class:list={cardContainerClasses}>
+        <Wrapper DisplayAs={DisplayAs ?? ''} GlobalStyles={globalStyles} isFullSplit={isFullSplit}>
+            <Asset
+                data={data}
+                displaySettings={displaySettings}
+                displayTemplateKey={displayTemplateKey}
+                contentPayload={contentPayload}
+                DisplayAs={DisplayAs ?? undefined}
+                widthClass={assetWidthClass}
+                verticalAlignClass={assetVerticalAlignClass}
+                isFullSplit={isFullSplit}
+            />
+            <Content
+                data={data}
+                displaySettings={displaySettings}
+                displayTemplateKey={displayTemplateKey}
+                contentPayload={contentPayload}
+                DisplayAs={DisplayAs ?? undefined}
+                widthClass={contentWidthClass}
+                verticalAlignClass={contentVerticalAlignClass}
+                isFullSplit={isFullSplit}
+                globalStyles={isFullSplit ? globalStyles : undefined}
+            />
+        </Wrapper>
+    </div>
+</span>
