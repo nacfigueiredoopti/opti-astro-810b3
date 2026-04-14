@@ -45,7 +45,10 @@ var contentPayload: ContentPayload = {
 };
 
 const urlPath = `${Astro.url.pathname.replace(/\/$/, '')}/`;
-const urlBase = Astro.url.origin;
+// In local dev, use the production base URL so CMS content resolves correctly
+const urlBase = import.meta.env.DEV && import.meta.env.SITE_BASE_URL
+    ? import.meta.env.SITE_BASE_URL
+    : Astro.url.origin;
 
 // Fetch content in the current locale (Astro's i18n handles fallback via rewrites)
 contentPayload.loc = localeToSdkLocale(lang) as Locales;

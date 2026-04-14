@@ -47,7 +47,11 @@ export default defineConfig({
             noExternal: ['graphql', 'graphql-request'],
             external: ['vite'],
         },
-        plugins: [mkcert(), tailwindcss()],
+        plugins: [
+            // mkcert disabled for local dev without sudo — re-enable for HTTPS
+            ...(process.env.ENABLE_HTTPS ? [mkcert()] : []),
+            tailwindcss(),
+        ],
     },
     integrations: [alpinejs(), svelte()],
 

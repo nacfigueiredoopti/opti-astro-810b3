@@ -5,15 +5,26 @@ import 'dotenv/config';
 
 const OPTIMIZELY_GRAPH_GATEWAY=process.env.OPTIMIZELY_GRAPH_GATEWAY;
 const OPTIMIZELY_GRAPH_SINGLE_KEY=process.env.OPTIMIZELY_GRAPH_SINGLE_KEY;
+const OPTIMIZELY_GRAPH_APP_KEY=process.env.OPTIMIZELY_GRAPH_APP_KEY;
+const OPTIMIZELY_GRAPH_SECRET=process.env.OPTIMIZELY_GRAPH_SECRET;
+
+// Build auth: prefer single key, fall back to Basic auth
+const useBasicAuth = !OPTIMIZELY_GRAPH_SINGLE_KEY || OPTIMIZELY_GRAPH_SINGLE_KEY === 'YOUR-KEY-HERE';
+const basicToken = useBasicAuth ? Buffer.from(`${OPTIMIZELY_GRAPH_APP_KEY}:${OPTIMIZELY_GRAPH_SECRET}`).toString('base64') : null;
 
 // Auto-detect DAM and Forms features by querying the Graph schema
 async function detectCmsFeatures(): Promise<{ damEnabled: boolean; formsEnabled: boolean }> {
     try {
         const response = await fetch(
-            `${OPTIMIZELY_GRAPH_GATEWAY}/content/v2?auth=${OPTIMIZELY_GRAPH_SINGLE_KEY}`,
+            useBasicAuth
+                ? `${OPTIMIZELY_GRAPH_GATEWAY}/content/v2`
+                : `${OPTIMIZELY_GRAPH_GATEWAY}/content/v2?auth=${OPTIMIZELY_GRAPH_SINGLE_KEY}`,
             {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(useBasicAuth ? { 'Authorization': `Basic ${basicToken}` } : {}),
+                },
                 body: JSON.stringify({
                     query: `query cmsFeatureChecks {
                         damEnabled: __type(name: "cmp_Asset") { __typename }
@@ -23,8 +34,8 @@ async function detectCmsFeatures(): Promise<{ damEnabled: boolean; formsEnabled:
             }
         );
         const { data } = await response.json();
-        const damEnabled = data?.damEnabled !== null;
-        const formsEnabled = data?.formsEnabled !== null;
+        const damEnabled = data?.damEnabled != null && data.damEnabled !== null;
+        const formsEnabled = data?.formsEnabled != null && data.formsEnabled !== null;
         console.log(`[codegen] Auto-detected features — DAM: ${damEnabled}, Forms: ${formsEnabled}`);
         return { damEnabled, formsEnabled };
     } catch (error) {
