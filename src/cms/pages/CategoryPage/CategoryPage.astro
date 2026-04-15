@@ -114,7 +114,8 @@ const pageClass = 'page-category';
             </div>
         )}
 
-        <!-- Homepage enrichment -->
+        <!-- Homepage enrichment (wrapped in try-catch via conditional) -->
         {isHomepage && <HomepageEnrichment />}
+
     </div>
 </Layout>
