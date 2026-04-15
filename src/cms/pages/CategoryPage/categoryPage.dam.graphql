@@ -1,0 +1,29 @@
+fragment CategoryPage on CategoryPage {
+    _metadata {
+        ...PageUrl
+        published
+        displayName
+    }
+    Heading
+    SubHeading
+    HeroImage {
+        ...ContentUrl
+        ...ContentReferenceItem
+    }
+    CategoryIcon
+    Introduction {
+        html
+    }
+    ProductCards {
+        ...AllComponents
+    }
+    MainContentArea {
+        ...AllComponents
+    }
+    SeoSettings {
+        ...PageSeoSettingsProperty
+    }
+    PageAdminSettings {
+        ...PageAdminSettingsProperty
+    }
+}

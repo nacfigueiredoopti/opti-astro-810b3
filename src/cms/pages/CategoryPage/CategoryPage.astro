@@ -1,0 +1,120 @@
+---
+import { Image as AstroImage } from 'astro:assets';
+import type { Locales } from 'astro';
+import type { CategoryPageFragment } from '../../../../__generated/sdk';
+import { getOptimizelySdk } from '../../../graphql/getSdk';
+import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
+import Layout from '../../../layouts/Layout.astro';
+import ContentArea from '../../shared/ContentArea/ContentArea.astro';
+import HomepageEnrichment from '../../shared/HomepageEnrichment.astro';
+
+export interface Props {
+    contentPayload: ContentPayload;
+}
+const { contentPayload } = Astro.props as Props;
+
+const optiResponse = await getOptimizelySdk(contentPayload).pageById({
+    key: contentPayload.key,
+    //@ts-ignore
+    loc: contentPayload.loc as Locales,
+    ver: contentPayload.ver,
+});
+
+const page = optiResponse?._Page?.item as CategoryPageFragment;
+
+const graphType = page?.SeoSettings?.GraphType ?? 'website';
+const defaultUrl = page?._metadata?.url?.default || '';
+const hierarchicalUrl =
+    page?._metadata?.url?.type === 'SIMPLE'
+        ? page?._metadata?.url?.hierarchical
+        : '';
+const extPreviewEnabled = page?.PageAdminSettings?.EnableExternalPreview ?? false;
+
+const heroUrl = (page?.HeroImage as any)?.item?.Url || page?.HeroImage?.url?.default || null;
+
+// Detect if this is the homepage
+const pathname = Astro.url.pathname;
+const isHomepage = pathname === '/' || pathname === '/en/' || /^\/[a-z]{2}(-[a-z]{2})?\/?$/.test(pathname);
+
+const cssClassesForContentArea =
+    'mx-auto justify-center p-2 sm:p-3 md:p-4 flex gap-8 overflow-x-auto flex-wrap';
+
+const pageClass = 'page-category';
+---
+
+<Layout
+    title={page?.SeoSettings?.MetaTitle ??
+        page?.Heading ??
+        page?._metadata?.displayName ??
+        'Category'}
+    description={page?.SeoSettings?.MetaDescription ??
+        page?.SubHeading ?? ''}
+    graphtype={graphType}
+    indexing={page?.SeoSettings?.Indexing ?? false}
+    contentPayload={contentPayload}
+    defaultUrl={defaultUrl}
+    hierarchicalUrl={hierarchicalUrl ?? ''}
+    extPreviewEnabled={extPreviewEnabled}
+>
+    <div class={`max-w-screen-6xl mx-auto ${pageClass}`}>
+        <!-- Hero -->
+        {heroUrl ? (
+            <section class="relative flex w-full items-center min-h-[400px] md:min-h-[500px] overflow-hidden">
+                <AstroImage
+                    src={heroUrl}
+                    alt={page?.Heading || ''}
+                    class="absolute inset-0 h-full w-full object-cover"
+                    inferSize={true}
+                />
+                <div class="absolute inset-0 bg-gradient-to-r from-neutral/70 via-neutral/40 to-transparent"></div>
+                <div class="relative z-10 px-6 md:px-12 lg:px-20 py-16 max-w-screen-xl mx-auto w-full">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">{page?.Heading}</h1>
+                    {page?.SubHeading && (
+                        <p class="text-lg md:text-xl text-white/80 max-w-lg">{page.SubHeading}</p>
+                    )}
+                </div>
+            </section>
+        ) : page?.Heading && (
+            <section class="mx-auto max-w-screen-xl px-6 py-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-3">{page.Heading}</h1>
+                {page?.SubHeading && (
+                    <p class="text-base-content/60 text-lg">{page.SubHeading}</p>
+                )}
+            </section>
+        )}
+
+        <!-- Introduction -->
+        {page?.Introduction?.html && (
+            <section class="mx-auto max-w-screen-xl px-6 py-6">
+                <div class="prose prose-lg max-w-3xl text-base-content/80" set:html={page.Introduction.html} />
+            </section>
+        )}
+
+        <!-- Product Cards -->
+        {page?.ProductCards && (
+            <div class={cssClassesForContentArea}>
+                {(page.ProductCards as any[])?.map((contentAreaItem: any) => (
+                    <ContentArea
+                        contentPayload={contentPayload}
+                        contentAreaItem={contentAreaItem}
+                    />
+                ))}
+            </div>
+        )}
+
+        <!-- Main Content Area -->
+        {page?.MainContentArea && (
+            <div class={cssClassesForContentArea}>
+                {(page.MainContentArea as any[])?.map((contentAreaItem: any) => (
+                    <ContentArea
+                        contentPayload={contentPayload}
+                        contentAreaItem={contentAreaItem}
+                    />
+                ))}
+            </div>
+        )}
+
+        <!-- Homepage enrichment -->
+        {isHomepage && <HomepageEnrichment />}
+    </div>
+</Layout>
