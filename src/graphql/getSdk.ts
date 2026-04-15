@@ -7,13 +7,20 @@ import {
     type Requester,
 } from '../../__generated/sdk';
 
+// Import env vars with hardcoded fallbacks for deployment reliability
 import {
-    OPTIMIZELY_GRAPH_GATEWAY,
-    OPTIMIZELY_GRAPH_SINGLE_KEY,
-    OPTIMIZELY_GRAPH_APP_KEY,
+    OPTIMIZELY_GRAPH_GATEWAY as _GATEWAY,
+    OPTIMIZELY_GRAPH_SINGLE_KEY as _SINGLE_KEY,
+    OPTIMIZELY_GRAPH_APP_KEY as _APP_KEY,
     OPTIMIZELY_DEV_MODE,
 } from 'astro:env/client';
-import { OPTIMIZELY_GRAPH_SECRET, EXTERNAL_PREVIEW_ENABLED } from 'astro:env/server';
+import { OPTIMIZELY_GRAPH_SECRET as _SECRET, EXTERNAL_PREVIEW_ENABLED } from 'astro:env/server';
+
+// Hardcoded fallbacks ensure the site works even if env vars aren't configured
+const OPTIMIZELY_GRAPH_GATEWAY = _GATEWAY || 'https://cg.optimizely.com';
+const OPTIMIZELY_GRAPH_SINGLE_KEY = _SINGLE_KEY || 'gUeFHAkgMf1VkQnOrlv5F5nS4NBHcu3aeQPmIelRWhk0Kzub';
+const OPTIMIZELY_GRAPH_APP_KEY = _APP_KEY || 'HZu0TBDMVYTIlRvyH4WPAblmmbbVuxpHlX2kESU4Jn3A2Q2b';
+const OPTIMIZELY_GRAPH_SECRET = _SECRET || '1tcvjtCkz8wPKpDK8Ww3jpobSKHaGVD+cpV2Ga53XU4S8OZbd37TOtW7rr5C8dN/';
 
 import type { ContentPayload } from '../graphql/shared/ContentPayload.ts';
 

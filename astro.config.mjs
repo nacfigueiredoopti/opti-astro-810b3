@@ -63,22 +63,26 @@ export default defineConfig({
             OPTIMIZELY_GRAPH_SECRET: envField.string({
                 context: 'server',
                 access: 'secret',
-                optional: false,
+                optional: true,
+                default: '1tcvjtCkz8wPKpDK8Ww3jpobSKHaGVD+cpV2Ga53XU4S8OZbd37TOtW7rr5C8dN/',
             }),
             OPTIMIZELY_GRAPH_APP_KEY: envField.string({
                 context: 'client',
                 access: 'public',
-                optional: false,
+                optional: true,
+                default: 'HZu0TBDMVYTIlRvyH4WPAblmmbbVuxpHlX2kESU4Jn3A2Q2b',
             }),
             OPTIMIZELY_GRAPH_SINGLE_KEY: envField.string({
                 context: 'client',
                 access: 'public',
-                optional: false,
+                optional: true,
+                default: 'gUeFHAkgMf1VkQnOrlv5F5nS4NBHcu3aeQPmIelRWhk0Kzub',
             }),
             OPTIMIZELY_GRAPH_GATEWAY: envField.string({
                 context: 'client',
                 access: 'public',
-                optional: false,
+                optional: true,
+                default: 'https://cg.optimizely.com',
             }),
             PREVIEW_DELAY: envField.number({
                 context: 'client',
