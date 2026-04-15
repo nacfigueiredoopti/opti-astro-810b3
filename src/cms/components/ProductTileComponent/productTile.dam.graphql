@@ -1,0 +1,17 @@
+fragment ProductTile on ProductTile {
+    _metadata {
+        key
+        displayName
+        types
+    }
+    Title
+    Description
+    IconName
+    Link {
+        text
+        url {
+            default
+            hierarchical
+        }
+    }
+}

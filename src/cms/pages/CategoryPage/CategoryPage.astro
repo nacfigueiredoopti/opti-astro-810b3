@@ -91,15 +91,17 @@ const pageClass = 'page-category';
         )}
 
         <!-- Product Cards -->
-        {page?.ProductCards && (
-            <div class={cssClassesForContentArea}>
-                {(page.ProductCards as any[])?.map((contentAreaItem: any) => (
-                    <ContentArea
-                        contentPayload={contentPayload}
-                        contentAreaItem={contentAreaItem}
-                    />
-                ))}
-            </div>
+        {page?.ProductCards && (page.ProductCards as any[]).length > 0 && (
+            <section class="mx-auto max-w-screen-xl px-6 pb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {(page.ProductCards as any[]).map((contentAreaItem: any) => (
+                        <ContentArea
+                            contentPayload={contentPayload}
+                            contentAreaItem={contentAreaItem}
+                        />
+                    ))}
+                </div>
+            </section>
         )}
 
         <!-- Main Content Area -->
