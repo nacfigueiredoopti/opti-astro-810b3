@@ -19,6 +19,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
+  // Fix known broken URL patterns (double-dash in service-contact)
+  if (context.url.pathname.includes('service--contact')) {
+    const fixedPath = context.url.pathname.replace('service--contact', 'service-contact');
+    return new Response(null, { status: 301, headers: { Location: fixedPath } });
+  }
+
   // Check for redirects
   const redirectResponse = checkRedirects(context.url.pathname);
   if (redirectResponse) {

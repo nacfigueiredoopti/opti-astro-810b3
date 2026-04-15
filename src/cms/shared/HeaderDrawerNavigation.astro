@@ -1,5 +1,7 @@
 ---
 import type { MenuItemType } from './headerNavigationTypes';
+import { getLink } from './utils';
+import type { ButtonLinkData } from './utils';
 
 interface Props {
     headerItems?: MenuItemType[];
@@ -8,6 +10,7 @@ interface Props {
 
 const { headerItems, isDrawerRight } = Astro.props;
 const headerItemCount = headerItems?.length || 0;
+const currentDomain = Astro.url.origin;
 ---
 
 <!-- ============================================ -->
@@ -66,7 +69,7 @@ const headerItemCount = headerItems?.length || 0;
                                         data?.SubMenuItems?.length == 0) ? (
                                         <a
                                             class="text-gray-500 transition hover:text-gray-500/75 py-3"
-                                            href={data?.Link?.url?.default || '#'}
+                                            href={getLink({ url: data?.Link?.url } as ButtonLinkData, currentDomain)}
                                         >
                                             {data?.LinkText || data?.Link?.text || ''}
                                         </a>
@@ -171,6 +174,14 @@ const headerItemCount = headerItems?.length || 0;
 <!-- DRAWER NAVIGATION JAVASCRIPT -->
 <!-- ============================================ -->
 <script>
+    function resolveLink(linkData: any): string {
+        const url = linkData?.Link?.url;
+        if (!url) return '#';
+        const type = url.type || 'HIERARCHICAL';
+        if (type === 'EXTERNAL') return url.default || '#';
+        return url.hierarchical || url.default || '#';
+    }
+
     function initializeDrawer() {
         const drawerMenuButton = document.getElementById('drawer-menu-button');
         const closeDrawerButton = document.getElementById('close-drawer-button');
@@ -245,7 +256,7 @@ const headerItemCount = headerItems?.length || 0;
                 const li = document.createElement('li');
                 const a = document.createElement('a');
                 a.className = 'text-gray-500 transition hover:text-gray-500/75 py-3';
-                a.href = item?.Link?.url?.default || '#';
+                a.href = resolveLink(item);
                 a.textContent = item?.LinkText || item?.Link?.text || '';
                 li.appendChild(a);
                 submenuItems?.appendChild(li);

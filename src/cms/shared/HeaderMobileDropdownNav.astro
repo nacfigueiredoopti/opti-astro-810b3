@@ -1,5 +1,7 @@
 ---
 import type { MenuItemType } from './headerNavigationTypes';
+import { getLink } from './utils';
+import type { ButtonLinkData } from './utils';
 
 interface Props {
     headerItems?: MenuItemType[];
@@ -7,6 +9,7 @@ interface Props {
 
 const { headerItems } = Astro.props;
 const headerItemCount = headerItems?.length || 0;
+const currentDomain = Astro.url.origin;
 ---
 
 <div class="dropdown lg:hidden">
@@ -39,9 +42,7 @@ const headerItemCount = headerItems?.length || 0;
                             data?.SubMenuItems?.length == 0) && (
                             <a
                                 class="text-lg text-gray-500 transition hover:text-gray-500/75"
-                                href={
-                                    data?.Link?.url?.default || '#'
-                                }
+                                href={getLink({ url: data?.Link?.url } as ButtonLinkData, currentDomain)}
                             >
                                 {data?.LinkText || data?.Link?.text || ''}
                             </a>
@@ -61,13 +62,7 @@ const headerItemCount = headerItems?.length || 0;
                                                     <li class="text-lg text-gray-500 transition hover:text-gray-500/75">
                                                         <a
                                                             class="text-lg transition hover:text-gray-500/75"
-                                                            href={
-                                                                subdata
-                                                                    ?.Link
-                                                                    ?.url
-                                                                    ?.default ||
-                                                                '#'
-                                                            }
+                                                            href={getLink({ url: subdata?.Link?.url } as ButtonLinkData, currentDomain)}
                                                         >
                                                             {subdata?.LinkText ||
                                                              subdata

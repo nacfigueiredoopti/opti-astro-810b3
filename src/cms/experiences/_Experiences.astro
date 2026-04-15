@@ -4,6 +4,7 @@ import { getOptimizelySdk } from '../../graphql/getSdk';
 import type { ContentPayload } from '../../graphql/shared/ContentPayload';
 import Layout from '../../layouts/Layout.astro';
 import Section from '../compositions/Section/Section.astro';
+import HomepageEnrichment from '../shared/HomepageEnrichment.astro';
 const previewPayload = Astro.props.data as ContentPayload;
 
 const optiResponse = await getOptimizelySdk(previewPayload).getExperience({
@@ -44,6 +45,10 @@ const hierarchicalUrl =
         : '';
         
 const pageClass = 'page-experience';
+
+// Detect if this is the homepage
+const pathname = Astro.url.pathname;
+const isHomepage = pathname === '/' || pathname === '/en/' || /^\/[a-z]{2}(-[a-z]{2})?\/?$/.test(pathname);
 ---
 
 <Layout
@@ -62,5 +67,6 @@ const pageClass = 'page-experience';
                 <Section contentPayload={previewPayload} grid={grid} />
             ))
         }
+        {isHomepage && <HomepageEnrichment />}
     </div>
 </Layout>

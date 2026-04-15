@@ -20,7 +20,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link {
                         text
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                     LinkText
@@ -40,7 +43,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link: _metadata {
                         text: displayName
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                 }
@@ -48,7 +54,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link: _metadata {
                         text: displayName
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                 }
@@ -58,7 +67,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link {
                         text
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                 }
@@ -66,7 +78,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link: _metadata {
                         text: displayName
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                 }
@@ -74,7 +89,10 @@ query siteSettingsById($key: [String]!, $loc: [Locales]!, $ver: String!) {
                     Link: _metadata {
                         text: displayName
                         url {
+                            base
                             default
+                            hierarchical
+                            type
                         }
                     }
                 }

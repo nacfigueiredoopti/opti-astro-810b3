@@ -109,20 +109,29 @@ export function getLink(buttonLinkData: ButtonLinkData | null | undefined, curre
     const url = buttonLinkData?.url;
     const type = url?.type || 'HIERARCHICAL';
     const base = url?.base || '';
-    const isSameDomain = currentDomain === base;
+
+    // Strip protocol for domain comparison (origin includes protocol, base may not)
+    const normalizedCurrent = currentDomain.replace(/^https?:\/\//, '');
+    const normalizedBase = base.replace(/^https?:\/\//, '');
+    const isSameDomain = normalizedCurrent === normalizedBase || !base;
 
     if (type === 'EXTERNAL') {
         return url?.default || '#';
     }
 
     if (type === 'SIMPLE' || type === 'HIERARCHICAL') {
+        // For same domain or no base, use the relative hierarchical path
         if (isSameDomain) {
-            return url?.hierarchical || '#';
+            return url?.hierarchical || url?.default || '#';
         }
         if (url?.default && url.default.startsWith('http')) {
             return url.default;
         }
-        return base + (url?.hierarchical || '#');
+        // Prefer hierarchical (relative path) over building absolute URL to wrong domain
+        if (url?.hierarchical) {
+            return url.hierarchical;
+        }
+        return url?.default || '#';
     }
 
     return url?.hierarchical || url?.default || '#';

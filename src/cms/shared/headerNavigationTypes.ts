@@ -1,10 +1,15 @@
 // Shared type definitions for navigation components
 
+export interface LinkUrlType {
+    base?: string;
+    default?: string;
+    hierarchical?: string;
+    type?: string;
+}
+
 export interface LinkType {
     text: string;
-    url: {
-        default: string;
-    };
+    url: LinkUrlType;
 }
 
 export interface MenuItemType {

@@ -4,13 +4,20 @@ import type { SiteSettingsByHostnameQuery } from '../../../__generated/sdk';
 import { getClassForLogo } from './siteSettingsHelper';
 import DevTools from './DevTools.astro';
 import type { FXDebugInfo } from '../../optimizely/debug';
+import { getLink } from './utils';
+import type { ButtonLinkData } from './utils';
 
 // Define interfaces for the menu items to fix TypeScript errors
+interface LinkUrlType {
+    base?: string;
+    default?: string;
+    hierarchical?: string;
+    type?: string;
+}
+
 interface LinkType {
     text: string;
-    url: {
-        default: string;
-    };
+    url: LinkUrlType;
 }
 
 interface FooterItemType {
@@ -24,6 +31,7 @@ interface Props {
 
 const { siteSettings, fxDebugInfo } = Astro.props;
 const settings = siteSettings?.SiteSettings?.item;
+const currentDomain = Astro.url.origin;
 
 const logoUrl = (settings?.Logo as any)?.item?.Url || settings?.Logo?.url?.default || null;
 const logoCss = getClassForLogo(settings?.LogoResolution);
@@ -71,7 +79,7 @@ const socialLinkGitHub = "https://www.github.com/" + settings?.SocialGitHub;
                         <li>
                             <a
                                 class="text-base-content opacity-70 transition hover:text-primary"
-                                href={data?.Link?.url?.default || '#'}
+                                href={getLink({ url: data?.Link?.url } as ButtonLinkData, currentDomain)}
                             >
                                 {data?.Link?.text || ''}
                             </a>
