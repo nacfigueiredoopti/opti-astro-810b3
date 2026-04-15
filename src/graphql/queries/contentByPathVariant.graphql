@@ -12,15 +12,10 @@ query contentByPathVariant(
             value: [$variation]
         }
         where: {
-            _and: [
-                { _metadata: { url: { base: { eq: $base } } } }
-                {
-                    _or: [
-                        { _metadata: { url: { default: { eq: $url } } } }
-                        { _metadata: { url: { default: { eq: $urlNoSlash } } } }
-                        { _metadata: { url: { hierarchical: { eq: $url } } } }
-                    ]
-                }
+            _or: [
+                { _metadata: { url: { default: { eq: $url } } } }
+                { _metadata: { url: { default: { eq: $urlNoSlash } } } }
+                { _metadata: { url: { hierarchical: { eq: $url } } } }
             ]
         }
     ) {
