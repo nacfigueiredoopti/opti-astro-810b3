@@ -48,26 +48,26 @@
         'sunset'
 }
 
-/* Rabobank Custom Theme */
+/* Rabobank Custom Theme — Dark navy like rabobank.nl */
 [data-theme="rabobank"] {
-    color-scheme: light;
-    /* Primary: Rabobank Navy Blue #003082 */
-    --color-primary: oklch(0.30 0.15 264);
+    color-scheme: dark;
+    /* Primary: Rabobank Orange #FF6600 */
+    --color-primary: oklch(0.65 0.22 50);
     --color-primary-content: oklch(1.00 0 0);
-    /* Secondary: Rabobank Orange #FF6600 */
-    --color-secondary: oklch(0.65 0.22 50);
+    /* Secondary: Navy Blue #003082 */
+    --color-secondary: oklch(0.30 0.15 264);
     --color-secondary-content: oklch(1.00 0 0);
     /* Accent: Bright Blue #0063D3 */
     --color-accent: oklch(0.47 0.19 264);
     --color-accent-content: oklch(1.00 0 0);
-    /* Neutral: Dark Navy */
-    --color-neutral: oklch(0.25 0.05 270);
-    --color-neutral-content: oklch(0.98 0 0);
-    /* Base: White + Blue-tinted grays */
-    --color-base-100: oklch(1.00 0 0);
-    --color-base-200: oklch(0.97 0.005 265);
-    --color-base-300: oklch(0.94 0.01 265);
-    --color-base-content: oklch(0.20 0.03 270);
+    /* Neutral: Very Dark Navy #0a0e1a */
+    --color-neutral: oklch(0.15 0.03 270);
+    --color-neutral-content: oklch(0.92 0 0);
+    /* Base: Dark Navy backgrounds */
+    --color-base-100: oklch(0.18 0.04 268);  /* #141b2d - main bg */
+    --color-base-200: oklch(0.15 0.035 268); /* #101624 - card bg */
+    --color-base-300: oklch(0.22 0.04 268);  /* #1e2740 - borders/elevated */
+    --color-base-content: oklch(0.92 0.01 265); /* light text */
     /* Status colors */
     --color-info: oklch(0.62 0.17 250);
     --color-info-content: oklch(1.00 0 0);

@@ -46,8 +46,8 @@ const logoCss = getClassForLogo(settings?.LogoResolution);
 const headerItems = settings?.HeaderLinks as MenuItemType[] | undefined;
 ---
 
-<header class="sticky top-0 z-50 bg-gray-50/70 backdrop-blur-sm">
-    <div class="navbar bg-base-100 shadow-sm">
+<header class="sticky top-0 z-50 backdrop-blur-md bg-base-100/95 border-b border-base-300/30">
+    <div class="navbar bg-transparent">
         <div class="navbar-start">
             <!-- Navigation: Standard Mobile or Drawer Left -->
             {!isDrawerMode ? (
@@ -58,7 +58,7 @@ const headerItems = settings?.HeaderLinks as MenuItemType[] | undefined;
 
             <!-- Logo -->
             <a
-                class="block px-8 text-teal-600"
+                class="block px-8"
                 href={getRelativeLocaleUrl(lang, '/')}
             >
                 <span class="sr-only">Home</span>

@@ -1,10 +1,8 @@
 ---
 import type { ContentPayload } from '../../../graphql/shared/ContentPayload';
-import { isEditContext, getLink } from '../../shared/utils.ts';
-import type { ButtonLinkData } from '../../shared/utils.ts';
+import { isEditContext } from '../../shared/utils.ts';
 
 const isCmsEdit = isEditContext(Astro.url);
-const currentDomain = Astro.url.origin;
 
 export interface Props {
     key: string;
@@ -18,26 +16,23 @@ const { key, data, displaySettings, contentPayload } = Astro.props as Props;
 
 const title = data?.Title || data?._metadata?.displayName || '';
 const description = data?.Description || '';
-const iconName = data?.IconName || '';
 const link = data?.Link?.url?.hierarchical || data?.Link?.url?.default || '#';
 
-// Map product names to descriptions and styles
-const productInfo: Record<string, { desc: string; color: string }> = {
-    'Betalen':     { desc: 'Kies de betaalrekening die bij je past.', color: 'bg-primary text-primary-content' },
-    'Sparen':      { desc: 'Wat je spaardoel ook is, wij helpen je verder.', color: 'bg-neutral text-neutral-content' },
-    'Hypotheken':  { desc: 'Verhuizen of verbouwen? Bereken snel wat je kunt lenen.', color: 'bg-secondary text-secondary-content' },
-    'Hypotheek':   { desc: 'Verhuizen of verbouwen? Bereken snel wat je kunt lenen.', color: 'bg-secondary text-secondary-content' },
-    'Verzekeren':  { desc: 'Goed verzekerd zijn, helpt je om financieel gezond te blijven.', color: 'bg-neutral text-neutral-content' },
-    'Beleggen':    { desc: 'Bouw met ons vermogen op, voor nu en later.', color: 'bg-primary text-primary-content' },
-    'Pensioen':    { desc: 'Straks net zo lekker leven als nu? Wij denken met je mee.', color: 'bg-neutral text-neutral-content' },
-    'Lenen':       { desc: 'Verbouwing, nieuwe auto of verduurzamen? Ontdek een persoonlijke lening.', color: 'bg-neutral text-neutral-content' },
+// Map product names to descriptions and accent styles
+const productInfo: Record<string, { desc: string; accent: boolean }> = {
+    'Betalen':     { desc: 'Kies de betaalrekening die bij je past.', accent: true },
+    'Sparen':      { desc: 'Wat je spaardoel ook is, wij helpen je verder.', accent: false },
+    'Hypotheken':  { desc: 'Verhuizen of verbouwen? Bereken snel wat je kunt lenen.', accent: true },
+    'Hypotheek':   { desc: 'Verhuizen of verbouwen? Bereken snel wat je kunt lenen.', accent: true },
+    'Verzekeren':  { desc: 'Goed verzekerd zijn, helpt je om financieel gezond te blijven. Tot 12% pakketkorting op schadeverzekeringen.', accent: false },
+    'Beleggen':    { desc: 'Bouw met ons vermogen op, voor nu en later.', accent: true },
+    'Pensioen':    { desc: 'Straks net zo lekker leven als nu? Wij denken met je mee.', accent: false },
+    'Lenen':       { desc: 'Verbouwing, nieuwe auto of verduurzamen? Ontdek een persoonlijke lening.', accent: false },
 };
 
-const info = productInfo[title] || { desc: description, color: 'bg-base-200 text-base-content' };
+const info = productInfo[title] || { desc: description, accent: false };
 const cardDesc = description || info.desc;
-const cardColor = info.color;
-
-// Verzekeren spans full width
+const isAccent = info.accent; // Accent cards have blue-navy highlight like rabobank.nl
 const isWide = title === 'Verzekeren';
 
 const componentClass = 'component-producttile';
@@ -45,15 +40,20 @@ const componentClass = 'component-producttile';
 
 <a
     href={link !== '#' ? link : `/${title.toLowerCase()}/`}
-    class:list={[cardColor, 'rounded-xl p-6 pb-10 relative group hover:brightness-110 transition-all duration-300 flex', isWide ? 'col-span-full flex-col md:flex-row md:items-center md:justify-between min-h-[120px]' : 'flex-col justify-between min-h-[160px]', componentClass]}
+    class:list={[
+        'rounded-xl p-6 relative group transition-all duration-300 flex border',
+        isAccent ? 'bg-secondary text-secondary-content border-secondary/30 hover:border-secondary/60' : 'bg-base-200 text-base-content border-base-300/50 hover:border-base-300',
+        isWide ? 'col-span-full flex-col md:flex-row md:items-center md:justify-between min-h-[100px]' : 'flex-col justify-between min-h-[150px]',
+        componentClass
+    ]}
     data-epi-block-id={isCmsEdit && key || undefined}
 >
     <div>
-        <h3 class="text-xl font-bold italic mb-2">{title}</h3>
-        <p class="text-sm opacity-80">{cardDesc}</p>
+        <h3 class:list={['text-xl font-bold italic mb-2', isAccent ? 'text-primary' : 'text-base-content']}>{title}</h3>
+        <p class="text-sm opacity-70 leading-relaxed">{cardDesc}</p>
     </div>
     <div class:list={[isWide ? 'mt-4 md:mt-0 md:ml-8 flex-shrink-0' : 'self-end mt-4']}>
-        <svg class="w-6 h-6 opacity-70 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="w-5 h-5 opacity-50 group-hover:opacity-80 group-hover:translate-x-1 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
         </svg>
     </div>
