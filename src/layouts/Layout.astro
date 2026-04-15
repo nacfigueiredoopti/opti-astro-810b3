@@ -113,7 +113,7 @@ const isRtl = rtlLangs.includes(currentLang.split('-')[0]);
         <title>{title}</title>
         {ASTRO_TRANSITIONS_ENABLED && <ClientRouter />}
     </head>
-    <body data-content-key={contentKey}>
+    <body data-content-key={contentKey} style="background-color: #1B2234; color: #E6EAF0;">
         <script is:inline src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
         <script is:inline>
             document.addEventListener('astro:page-load', () => {

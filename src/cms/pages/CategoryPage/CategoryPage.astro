@@ -54,42 +54,37 @@ const pageClass = 'page-category';
     extPreviewEnabled={extPreviewEnabled}
 >
     <div class={`max-w-screen-6xl mx-auto ${pageClass}`}>
-        <!-- Hero -->
-        {heroUrl ? (
-            <section class="relative flex w-full items-center min-h-[450px] md:min-h-[550px] overflow-hidden">
-                <AstroImage
-                    src={heroUrl}
-                    alt={page?.Heading || ''}
-                    class="absolute inset-0 h-full w-full object-cover"
-                    inferSize={true}
-                />
-                <div class="absolute inset-0 bg-gradient-to-r from-base-100/90 via-base-100/50 to-transparent"></div>
-                <div class="relative z-10 px-6 md:px-12 lg:px-20 py-16 max-w-screen-xl mx-auto w-full">
-                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-base-content mb-4">{page?.Heading}</h1>
-                    {page?.SubHeading && (
-                        <p class="text-lg md:text-xl text-base-content/70 max-w-lg">{page.SubHeading}</p>
-                    )}
-                </div>
-                <!-- Scroll indicator -->
-                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
-                    <svg class="w-8 h-8 text-base-content/40 animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                </div>
-            </section>
-        ) : page?.Heading && (
-            <section class="mx-auto max-w-screen-xl px-6 pt-12 pb-6">
-                <h1 class="text-4xl md:text-5xl font-bold text-base-content mb-3">{page.Heading}</h1>
+        <!-- Hero (always show with fallback image) -->
+        <section class="relative flex w-full items-center min-h-[450px] md:min-h-[550px] overflow-hidden">
+            <img
+                src={heroUrl || 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1600&h=700&fit=crop&crop=faces'}
+                alt={page?.Heading || ''}
+                class="absolute inset-0 h-full w-full object-cover"
+                loading="eager"
+                width="1600"
+                height="700"
+            />
+            <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(27,34,52,0.92), rgba(27,34,52,0.5), transparent);"></div>
+            <div class="relative z-10 px-6 md:px-12 lg:px-20 py-16 max-w-screen-xl mx-auto w-full">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4" style="color: #FFFFFF;">{page?.Heading}</h1>
                 {page?.SubHeading && (
-                    <p class="text-base-content/50 text-lg max-w-2xl">{page.SubHeading}</p>
+                    <p class="text-lg md:text-xl max-w-lg mb-8" style="color: rgba(255,255,255,0.75);">{page.SubHeading}</p>
                 )}
-            </section>
-        )}
+                {isHomepage && (
+                    <a href="#content" class="btn text-white border-0 rounded-lg px-8 py-3" style="background-color: #FF6600;">Ontdek meer</a>
+                )}
+            </div>
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10">
+                <svg class="w-8 h-8 animate-bounce" style="color: rgba(255,255,255,0.4);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+        </section>
 
         <!-- Introduction -->
         {page?.Introduction?.html && (
-            <section class="mx-auto max-w-screen-xl px-6 py-6">
-                <div class="prose prose-invert prose-lg max-w-3xl text-base-content/70" set:html={page.Introduction.html} />
+            <section id="content" class="mx-auto max-w-screen-xl px-6 py-10 md:py-14">
+                <div class="prose prose-lg max-w-3xl" style="color: rgba(230,234,240,0.7);" set:html={page.Introduction.html} />
             </section>
         )}
 

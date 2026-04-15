@@ -47,16 +47,20 @@ const socialLinkGitHub = "https://www.github.com/" + settings?.SocialGitHub;
 
 ---
 
-<footer class="bg-base-200">
+<footer style="background-color: #0D1117; border-top: 1px solid rgba(37,48,68,0.5);">
     <div class="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
-        <div class="flex justify-center text-primary">
-            <AstroImage
-                class:list={[logoCss, "w-full object-contain max-w-full"]}
-                src={logoUrl ?? '/optimizely-logo.svg'}
-                alt="Logo"
-                width=300
-                height=300
-            />
+        <div class="flex justify-center">
+            {logoUrl ? (
+                <AstroImage
+                    class:list={[logoCss, "w-full object-contain max-w-full"]}
+                    src={logoUrl}
+                    alt="Rabobank"
+                    width=300
+                    height=300
+                />
+            ) : (
+                <span class="text-3xl font-bold tracking-tight" style="color: #FF6600;">Rabobank</span>
+            )}
         </div>
 
         <p
