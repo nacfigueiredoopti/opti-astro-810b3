@@ -1,4 +1,4 @@
 [build]
-  command = "yarn run build"
+  command = "corepack enable && yarn run build"
   publish = "dist"
-  environment = { NETLIFY = "true" }
+  environment = { NODE_VERSION = "22", NETLIFY = "true" }
