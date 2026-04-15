@@ -1,0 +1,29 @@
+fragment NewsArticlePage on NewsArticlePage {
+    _metadata {
+        ...PageUrl
+        published
+        displayName
+    }
+    Heading
+    Summary
+    Body {
+        html
+    }
+    Category
+    ReadTime
+    Icon
+    IconBackground
+    Featured
+    HeroImage {
+        ...ContentUrl
+    }
+    PromoImage {
+        ...ContentUrl
+    }
+    SeoSettings {
+        ...PageSeoSettingsProperty
+    }
+    PageAdminSettings {
+        ...PageAdminSettingsProperty
+    }
+}

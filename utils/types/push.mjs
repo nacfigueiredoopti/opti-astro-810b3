@@ -170,11 +170,14 @@ const typeNameArg = process.argv[2];
         if (cleanContentType.created) delete cleanContentType.created;
 
         try {
-            await client.contentTypes.contentTypesPut(
-                contentTypeKey,
-                cleanContentType,
-                true // Force update
-            );
+            try {
+                await client.contentTypes.contentTypesGet(contentTypeKey);
+                // Exists - patch it
+                await client.contentTypes.contentTypesPatch(contentTypeKey, cleanContentType);
+            } catch {
+                // Does not exist - create it
+                await client.contentTypes.contentTypesCreate(cleanContentType);
+            }
             console.log(
                 `✅ Content type "${displayName}" (${contentTypeKey}) of baseType ${baseType} has been updated`
             );

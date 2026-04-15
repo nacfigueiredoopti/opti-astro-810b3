@@ -1,0 +1,16 @@
+fragment NewsArticlePageExcerpt on NewsArticlePage {
+    _metadata {
+        ...PageUrl
+        published
+    }
+    Heading
+    Summary
+    Category
+    ReadTime
+    Icon
+    IconBackground
+    Featured
+    PromoImage {
+        ...ContentUrl
+    }
+}

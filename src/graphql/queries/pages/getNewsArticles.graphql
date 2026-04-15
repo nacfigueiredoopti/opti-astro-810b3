@@ -1,0 +1,16 @@
+query getNewsArticles($loc: [Locales], $limit: Int = 20, $status: String = "Published") {
+    NewsArticlePage(
+        locale: $loc
+        orderBy: { _metadata: { published: DESC } }
+        limit: $limit
+        where: {
+            _metadata: {
+                status: { eq: $status }
+            }
+        }
+    ) {
+        items {
+            ...NewsArticlePageExcerpt
+        }
+    }
+}

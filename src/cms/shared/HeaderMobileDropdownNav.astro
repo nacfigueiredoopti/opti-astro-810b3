@@ -1,7 +1,6 @@
 ---
 import type { MenuItemType } from './headerNavigationTypes';
-import { getLink } from './utils';
-import type { ButtonLinkData } from './utils';
+import { resolveNavLink } from './navLinkResolver';
 
 interface Props {
     headerItems?: MenuItemType[];
@@ -42,7 +41,7 @@ const currentDomain = Astro.url.origin;
                             data?.SubMenuItems?.length == 0) && (
                             <a
                                 class="text-lg text-gray-500 transition hover:text-gray-500/75"
-                                href={getLink({ url: data?.Link?.url } as ButtonLinkData, currentDomain)}
+                                href={resolveNavLink(data?.Link?.url, currentDomain)}
                             >
                                 {data?.LinkText || data?.Link?.text || ''}
                             </a>
@@ -62,7 +61,7 @@ const currentDomain = Astro.url.origin;
                                                     <li class="text-lg text-gray-500 transition hover:text-gray-500/75">
                                                         <a
                                                             class="text-lg transition hover:text-gray-500/75"
-                                                            href={getLink({ url: subdata?.Link?.url } as ButtonLinkData, currentDomain)}
+                                                            href={resolveNavLink(subdata?.Link?.url, currentDomain)}
                                                         >
                                                             {subdata?.LinkText ||
                                                              subdata

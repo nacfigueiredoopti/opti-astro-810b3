@@ -1,0 +1,113 @@
+---
+/**
+ * Static Nieuws (News) listing page under Particulieren.
+ * Shows all published articles, sorted by date.
+ * Once NewsArticlePage content type is created in CMS, this can be
+ * switched to query that type instead.
+ */
+import type { Locales } from '../../__generated/sdk';
+import { getOptimizelySdk } from '../graphql/getSdk';
+import type { ContentPayload } from '../graphql/shared/ContentPayload';
+import Layout from '../layouts/Layout.astro';
+import { localeToSdkLocale } from '../lib/locale-helpers';
+import { Image as AstroImage } from 'astro:assets';
+import { format } from 'date-fns';
+
+const lang = Astro.currentLocale || 'en';
+
+const contentPayload: ContentPayload = {
+    ctx: 'view',
+    key: '',
+    ver: '',
+    loc: localeToSdkLocale(lang) as Locales,
+    preview_token: '',
+    types: [],
+};
+
+// Fetch all articles (using existing ArticlePage type)
+const articlesResponse = await getOptimizelySdk(contentPayload).getArticles({
+    loc: [contentPayload.loc as Locales],
+    limit: 20,
+});
+const articles = articlesResponse?.ArticlePage?.items || [];
+---
+
+<Layout
+    title="Nieuws - Rabobank"
+    description="Het laatste nieuws en artikelen van Rabobank"
+    contentPayload={contentPayload}
+>
+    <div class="max-w-screen-xl mx-auto px-6">
+        <!-- Hero -->
+        <section class="py-12 md:py-16">
+            <h1 class="text-4xl md:text-5xl font-bold italic text-base-content mb-3">Nieuws</h1>
+            <p class="text-base-content/60 text-lg max-w-2xl">
+                Het laatste nieuws, tips en inzichten van Rabobank. Blijf op de hoogte van alles wat belangrijk is voor jouw financien.
+            </p>
+        </section>
+
+        <!-- Articles Grid -->
+        <section class="pb-16">
+            {articles.length > 0 ? (
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {articles.map((article: any, i: number) => {
+                        const imageUrl = (article.PromoImage as any)?.item?.Url
+                            || article.PromoImage?.url?.default
+                            || '/article-list-placeholder.jpg';
+                        const articleUrl = article._metadata?.url?.hierarchical
+                            || article._metadata?.url?.default || '#';
+                        const publishedDate = article._metadata?.published
+                            ? format(new Date(article._metadata.published), 'dd MMM yyyy')
+                            : '';
+                        const isFeatured = i === 0;
+
+                        return isFeatured ? (
+                            <!-- Featured article (first) -->
+                            <a href={articleUrl} class="col-span-full rounded-2xl overflow-hidden relative group min-h-[350px] flex items-end" data-aos="fade-up">
+                                <AstroImage
+                                    src={imageUrl}
+                                    alt={article.Heading || 'Article image'}
+                                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                    inferSize={true}
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-neutral/90 via-neutral/40 to-transparent"></div>
+                                <div class="relative z-10 p-8 md:p-12 text-white w-full">
+                                    <span class="badge badge-primary mb-3">Uitgelicht</span>
+                                    <h2 class="text-2xl md:text-3xl font-bold italic mb-2">{article.Heading}</h2>
+                                    {article.SubHeading && <p class="opacity-80 text-sm md:text-base max-w-xl">{article.SubHeading}</p>}
+                                    {publishedDate && <p class="mt-3 text-xs opacity-60">{publishedDate}</p>}
+                                </div>
+                            </a>
+                        ) : (
+                            <!-- Regular article card -->
+                            <a href={articleUrl} class="card bg-base-200 shadow-sm hover:shadow-lg transition-all duration-300 group overflow-hidden" data-aos="fade-up">
+                                <figure class="overflow-hidden">
+                                    <AstroImage
+                                        src={imageUrl}
+                                        alt={article.Heading || 'Article image'}
+                                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                                        inferSize={true}
+                                    />
+                                </figure>
+                                <div class="card-body">
+                                    <h3 class="card-title text-lg">{article.Heading}</h3>
+                                    {article.Body?.html && (
+                                        <p class="text-base-content/60 text-sm line-clamp-2" set:html={article.Body.html.replace(/<[^>]*>/g, '').split(' ').slice(0, 25).join(' ') + '...'} />
+                                    )}
+                                    <div class="card-actions justify-between items-center mt-2">
+                                        {publishedDate && <span class="text-xs text-base-content/40">{publishedDate}</span>}
+                                        <span class="text-primary text-sm font-semibold group-hover:underline">Lees meer &rarr;</span>
+                                    </div>
+                                </div>
+                            </a>
+                        );
+                    })}
+                </div>
+            ) : (
+                <div class="text-center py-16">
+                    <p class="text-base-content/50 text-lg">Nog geen nieuwsartikelen beschikbaar.</p>
+                </div>
+            )}
+        </section>
+    </div>
+</Layout>

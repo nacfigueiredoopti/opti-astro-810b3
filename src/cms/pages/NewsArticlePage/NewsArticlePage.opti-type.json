@@ -1,0 +1,124 @@
+{
+	"key": "NewsArticlePage",
+	"displayName": "News Article",
+	"description": "News article page shared between web and mobile app.",
+	"baseType": "_page",
+	"sortOrder": 0,
+	"mayContainTypes": [],
+	"mediaFileExtensions": [],
+	"compositionBehaviors": [],
+	"properties": {
+		"Heading": {
+			"type": "string",
+			"displayName": "Heading",
+			"localized": true,
+			"required": true,
+			"group": "Information",
+			"sortOrder": 10,
+			"indexingType": "searchable"
+		},
+		"Summary": {
+			"type": "string",
+			"displayName": "Summary",
+			"description": "Short summary for article lists and the mobile app",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 20,
+			"indexingType": "searchable"
+		},
+		"Body": {
+			"type": "richText",
+			"displayName": "Body",
+			"localized": true,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 30,
+			"indexingType": "searchable"
+		},
+		"Category": {
+			"type": "string",
+			"displayName": "Category",
+			"description": "e.g. Mortgages, Savings, Financial Tips, Service",
+			"localized": false,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 40,
+			"indexingType": "queryable"
+		},
+		"ReadTime": {
+			"type": "string",
+			"displayName": "Read Time",
+			"description": "e.g. 3 min",
+			"localized": false,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 50
+		},
+		"Icon": {
+			"type": "string",
+			"displayName": "Icon",
+			"description": "Emoji icon for article card",
+			"localized": false,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 60
+		},
+		"IconBackground": {
+			"type": "string",
+			"displayName": "Icon Background",
+			"description": "Hex colour e.g. #E8EDF5",
+			"localized": false,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 70
+		},
+		"Featured": {
+			"type": "boolean",
+			"displayName": "Featured",
+			"description": "Show as featured article",
+			"localized": false,
+			"required": false,
+			"group": "Information",
+			"sortOrder": 80
+		},
+		"HeroImage": {
+			"type": "contentReference",
+			"displayName": "Hero Image",
+			"localized": true,
+			"required": false,
+			"group": "Images",
+			"sortOrder": 90,
+			"allowedTypes": ["Image"],
+			"restrictedTypes": []
+		},
+		"PromoImage": {
+			"type": "contentReference",
+			"displayName": "Promo Image",
+			"localized": true,
+			"required": false,
+			"group": "Images",
+			"sortOrder": 100,
+			"allowedTypes": ["Image"],
+			"restrictedTypes": []
+		},
+		"SeoSettings": {
+			"type": "component",
+			"contentType": "PageSeoSettings",
+			"displayName": "SEO Settings",
+			"localized": false,
+			"required": false,
+			"group": "SeoSettings",
+			"sortOrder": 110
+		},
+		"PageAdminSettings": {
+			"type": "component",
+			"contentType": "PageAdminSettings",
+			"displayName": "Page Admin Settings",
+			"localized": false,
+			"required": false,
+			"group": "AdminSettings",
+			"sortOrder": 10
+		}
+	}
+}
