@@ -1,41 +1,37 @@
 ---
 /**
- * Additional rich content sections for the homepage.
- * These supplement the CMS-driven content areas with curated, static sections
- * that match the Rabobank design language.
+ * Homepage enrichment sections matching Rabobank design language.
+ * Renders below the CMS-driven content areas on the homepage.
  */
 ---
 
-<!-- Wees alert - Fraud Awareness Section -->
-<section class="mx-auto max-w-screen-xl px-4 py-12 md:py-16" data-aos="fade-up">
+<!-- ============================== -->
+<!-- SECTION: Wees alert (Fraud)    -->
+<!-- ============================== -->
+<section class="mx-auto max-w-screen-xl px-6 py-12 md:py-16" data-aos="fade-up">
     <div class="flex flex-col md:flex-row items-center gap-8 md:gap-12">
-        <!-- Image -->
         <div class="w-full md:w-5/12 flex-shrink-0">
             <img
                 src="https://images.unsplash.com/photo-1581579438747-104c53d7fbc4?w=600&h=450&fit=crop&crop=faces"
                 alt="Persoon leest op de bank"
-                class="rounded-lg w-full h-auto object-cover shadow-lg"
+                class="rounded-lg w-full h-auto object-cover"
                 loading="lazy"
                 width="600"
                 height="450"
             />
         </div>
-        <!-- Text Content -->
         <div class="w-full md:w-7/12">
             <h2 class="text-3xl md:text-4xl font-bold italic text-base-content mb-4">
                 Wees alert
             </h2>
-            <p class="text-base-content/80 text-base leading-relaxed mb-6">
+            <p class="text-base-content/70 text-base leading-relaxed mb-6">
                 Steeds vaker raken organisaties betrokken bij datalekken. En zodra jouw
                 gegevens op straat liggen, staan criminelen klaar om toe te slaan: via slimme
                 phishingtrucs, een telefoontje van een 'bankmedewerker' die net echt klinkt of
                 een ogenschijnlijk nette betalingsherinnering. Door bewust te blijven, houd je
                 zelf de controle over je eigen veiligheid.
             </p>
-            <a
-                href="/en/veilig-online-bankieren/"
-                class="inline-flex items-center gap-2 text-primary font-semibold hover:underline transition"
-            >
+            <a href="/en/veilig-online-bankieren/" class="inline-flex items-center gap-2 text-primary font-semibold hover:underline transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
                     <path d="M9 12l2 2 4-4"></path>
@@ -46,18 +42,18 @@
     </div>
 </section>
 
-<!-- Rabo App Promotion Section -->
-<section class="mx-auto max-w-screen-xl px-4 py-8 md:py-12" data-aos="fade-up" data-aos-delay="100">
+<!-- ============================== -->
+<!-- SECTION: Rabo App Promotion    -->
+<!-- ============================== -->
+<section class="mx-auto max-w-screen-xl px-6 py-8 md:py-12" data-aos="fade-up">
     <div class="bg-neutral text-neutral-content rounded-2xl overflow-hidden">
-        <div class="flex flex-col md:flex-row items-center">
-            <!-- Text Content -->
-            <div class="w-full md:w-1/2 p-8 md:p-12 lg:p-16">
+        <div class="flex flex-col md:flex-row items-stretch">
+            <div class="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
                 <h2 class="text-3xl md:text-4xl font-bold italic mb-4">
                     Bankzaken regel je met de Rabo App
                 </h2>
-                <p class="opacity-80 text-base leading-relaxed mb-6">
-                    Spontaan uit eten vanavond? Check direct in de Rabo App
-                    hoe je ervoor staat.
+                <p class="opacity-70 text-base leading-relaxed mb-6">
+                    Spontaan uit eten vanavond? Check direct in de Rabo App hoe je ervoor staat.
                 </p>
                 <ul class="space-y-3 mb-8">
                     <li class="flex items-center gap-3">
@@ -79,16 +75,15 @@
                         <span>Uitgebreide online omgeving</span>
                     </li>
                 </ul>
-                <a href="/betalen/rabo-app/" class="btn btn-primary">
-                    Lees meer
-                </a>
+                <div>
+                    <a href="/betalen/rabo-app/" class="btn btn-primary">Lees meer</a>
+                </div>
             </div>
-            <!-- Phone Mockup -->
-            <div class="w-full md:w-1/2 flex justify-center items-end p-8 md:p-0">
+            <div class="w-full md:w-1/2 flex justify-center items-end">
                 <img
                     src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=600&fit=crop&crop=center"
                     alt="Rabo App op smartphone"
-                    class="w-full max-w-sm md:max-w-md h-auto object-cover rounded-t-2xl md:rounded-none md:rounded-tr-2xl"
+                    class="w-full h-full object-cover"
                     loading="lazy"
                     width="500"
                     height="600"
@@ -98,78 +93,128 @@
     </div>
 </section>
 
-<!-- Quick Tips / Financial Insights Section -->
-<section class="mx-auto max-w-screen-xl px-4 py-12 md:py-16" data-aos="fade-up" data-aos-delay="200">
-    <div class="text-center mb-10">
-        <h2 class="text-3xl md:text-4xl font-bold text-base-content">Financieel inzicht</h2>
-        <p class="text-base-content/70 mt-2 text-lg">Tips en artikelen om slimmer met geld om te gaan</p>
+<!-- ============================== -->
+<!-- SECTION: Promo Card (Rabo Free style) -->
+<!-- ============================== -->
+<section class="mx-auto max-w-screen-xl px-6 py-8 md:py-12" data-aos="fade-up">
+    <div class="relative rounded-2xl overflow-hidden">
+        <img
+            src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?w=1200&h=500&fit=crop&crop=top"
+            alt="Vrienden op een dakterras"
+            class="w-full h-64 md:h-96 object-cover"
+            loading="lazy"
+            width="1200"
+            height="500"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-neutral/90 via-neutral/50 to-transparent"></div>
+        <div class="absolute bottom-0 left-0 right-0 p-8 md:p-12 text-white">
+            <h2 class="text-2xl md:text-3xl font-bold italic mb-3">
+                Open een betaalrekening en ontdek alle voordelen
+            </h2>
+            <p class="opacity-80 text-sm md:text-base max-w-xl mb-6">
+                Naar de bios, een etentje met vrienden of sparen voor later? Jij bepaalt waar je je geld wel of niet aan uitgeeft.
+                Ontdek de betaalrekening die bij je past.
+            </p>
+            <div class="flex flex-wrap gap-3">
+                <a href="/betalen/betaalrekening/" class="btn btn-primary btn-sm md:btn-md">Bekijk betaalrekeningen</a>
+                <a href="/betalen/creditcard/" class="btn btn-outline btn-sm md:btn-md text-white border-white hover:bg-white hover:text-neutral">Bekijk creditcards</a>
+            </div>
+        </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Card 1 -->
-        <a href="/en/eerste-huis-kopen-tips/" class="card bg-base-200 shadow-md hover:shadow-xl transition-shadow duration-300 group">
-            <figure class="overflow-hidden">
-                <img
-                    src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400&h=250&fit=crop"
-                    alt="Eerste huis kopen"
-                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    loading="lazy"
-                    width="400"
-                    height="250"
-                />
-            </figure>
-            <div class="card-body">
-                <h3 class="card-title text-lg">Eerste huis kopen?</h3>
-                <p class="text-base-content/70 text-sm">
-                    Alles wat je moet weten over het kopen van je eerste woning, van hypotheek tot notaris.
+</section>
+
+<!-- ============================== -->
+<!-- SECTION: Rabo &Co / Magazine   -->
+<!-- ============================== -->
+<section class="mx-auto max-w-screen-xl px-6 py-8 md:py-12" data-aos="fade-up">
+    <div class="bg-neutral text-neutral-content rounded-2xl overflow-hidden">
+        <div class="flex flex-col md:flex-row items-stretch">
+            <div class="w-full md:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                <h2 class="text-2xl md:text-3xl font-bold italic mb-4">
+                    Financieel inzicht: tips en artikelen
+                </h2>
+                <p class="opacity-70 text-base leading-relaxed mb-6">
+                    Van je eerste huis kopen tot duurzaam beleggen. Ontdek verhalen, tips en inzichten
+                    die je helpen om slimmer met je geld om te gaan. Wij delen onze kennis zodat jij
+                    de beste financiele beslissingen kunt nemen.
                 </p>
-                <div class="card-actions justify-end mt-2">
-                    <span class="text-primary text-sm font-semibold group-hover:underline">Lees meer &rarr;</span>
+                <div>
+                    <a href="/en/eerste-huis-kopen-tips/" class="btn btn-primary">Lees de artikelen</a>
                 </div>
             </div>
-        </a>
-        <!-- Card 2 -->
-        <a href="/en/sparen-of-beleggen/" class="card bg-base-200 shadow-md hover:shadow-xl transition-shadow duration-300 group">
-            <figure class="overflow-hidden">
+            <div class="w-full md:w-1/2">
                 <img
-                    src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=250&fit=crop"
-                    alt="Sparen of beleggen"
-                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=500&fit=crop&crop=center"
+                    alt="Mensen in gesprek over financien"
+                    class="w-full h-full object-cover min-h-64"
                     loading="lazy"
-                    width="400"
-                    height="250"
+                    width="600"
+                    height="500"
                 />
-            </figure>
-            <div class="card-body">
-                <h3 class="card-title text-lg">Sparen of beleggen?</h3>
-                <p class="text-base-content/70 text-sm">
-                    Ontdek wat het beste bij jouw situatie past en hoe je je geld slim kunt laten groeien.
-                </p>
-                <div class="card-actions justify-end mt-2">
-                    <span class="text-primary text-sm font-semibold group-hover:underline">Lees meer &rarr;</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION: Heb je vragen?        -->
+<!-- ============================== -->
+<section class="mx-auto max-w-screen-xl px-6 py-12 md:py-16" data-aos="fade-up">
+    <h2 class="text-3xl md:text-4xl font-bold italic text-base-content mb-2">Heb je vragen?</h2>
+    <p class="text-base-content/60 mb-8">Neem contact met ons op waar en wanneer je maar wilt.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Chat Card (large, spans left column) -->
+        <div class="bg-primary/10 rounded-2xl overflow-hidden flex flex-col md:flex-row">
+            <div class="p-6 md:p-8 flex flex-col justify-end flex-1">
+                <div class="bg-primary/20 w-10 h-10 rounded-lg flex items-center justify-center mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold italic text-base-content mb-1">Stel je vraag via chat</h3>
+                <p class="text-base-content/60 text-sm mb-4">Direct antwoord van Robin, onze virtuele chat assistent.</p>
+                <div>
+                    <a href="/en/service-contact/" class="btn btn-neutral btn-sm">Start de chat</a>
                 </div>
             </div>
-        </a>
-        <!-- Card 3 -->
-        <a href="/en/duurzaam-beleggen/" class="card bg-base-200 shadow-md hover:shadow-xl transition-shadow duration-300 group">
-            <figure class="overflow-hidden">
+            <div class="w-full md:w-1/2 flex-shrink-0">
                 <img
-                    src="https://images.unsplash.com/photo-1473186578172-c141e6798cf4?w=400&h=250&fit=crop"
-                    alt="Duurzaam beleggen"
-                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=400&h=300&fit=crop&crop=faces"
+                    alt="Klantenservice medewerker"
+                    class="w-full h-48 md:h-full object-cover"
                     loading="lazy"
                     width="400"
-                    height="250"
+                    height="300"
                 />
-            </figure>
-            <div class="card-body">
-                <h3 class="card-title text-lg">Duurzaam beleggen</h3>
-                <p class="text-base-content/70 text-sm">
-                    Investeer in een betere toekomst. Ontdek hoe duurzaam beleggen werkt bij Rabobank.
-                </p>
-                <div class="card-actions justify-end mt-2">
-                    <span class="text-primary text-sm font-semibold group-hover:underline">Lees meer &rarr;</span>
-                </div>
             </div>
-        </a>
+        </div>
+
+        <!-- Right column: 2 stacked cards -->
+        <div class="flex flex-col gap-4">
+            <!-- Phone Card -->
+            <a href="/en/service-contact/" class="bg-base-200 rounded-2xl p-6 md:p-8 flex-1 hover:bg-base-300 transition-colors group">
+                <div class="bg-base-300 w-10 h-10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-base-content/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold italic text-base-content mb-1">Bel met een van onze medewerkers</h3>
+                <p class="text-base-content/60 text-sm mb-3">Bereikbaar op werkdagen van 9.00 tot 17.00 uur.</p>
+                <span class="btn btn-neutral btn-sm btn-outline">Bel ons</span>
+            </a>
+
+            <!-- Online Service Card -->
+            <a href="/en/service-contact/" class="bg-base-200 rounded-2xl p-6 md:p-8 flex-1 hover:bg-base-300 transition-colors group">
+                <div class="bg-base-300 w-10 h-10 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-base-content/70" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold italic text-base-content mb-1">Online klantenservice</h3>
+                <p class="text-base-content/60 text-sm mb-3">Vind het antwoord op onze website.</p>
+                <span class="btn btn-neutral btn-sm btn-outline">Service & contact</span>
+            </a>
+        </div>
     </div>
 </section>
