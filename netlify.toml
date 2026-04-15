@@ -2,3 +2,9 @@
   command = "corepack enable && yarn run build"
   publish = "dist"
   environment = { NODE_VERSION = "22", NETLIFY = "true" }
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "ALLOWALL"
+    Content-Security-Policy = "frame-ancestors *"
