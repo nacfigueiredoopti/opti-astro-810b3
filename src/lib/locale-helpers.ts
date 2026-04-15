@@ -104,7 +104,6 @@ export async function fetchContentByPath(
         // Use variant query if variantKey is provided
         if (variantKey) {
             console.log(`[GraphQL Variant] Executing contentByPathVariant query with:`, {
-                base: urlBase,
                 url: urlPath,
                 urlNoSlash: urlPathNoSlash,
                 variation: variantKey,
@@ -112,7 +111,6 @@ export async function fetchContentByPath(
             });
 
             contentByPathResponse = await getOptimizelySdk(contentPayload).contentByPathVariant({
-                base: urlBase,
                 url: urlPath,
                 urlNoSlash: urlPathNoSlash,
                 variation: variantKey
@@ -126,7 +124,6 @@ export async function fetchContentByPath(
             });
         } else {
             contentByPathResponse = await getOptimizelySdk(contentPayload).contentByPath({
-                base: urlBase,
                 url: urlPath,
                 urlNoSlash: urlPathNoSlash
             });

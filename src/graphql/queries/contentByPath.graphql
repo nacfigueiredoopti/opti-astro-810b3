@@ -1,4 +1,4 @@
-query contentByPath($base: String, $url: String!, $urlNoSlash: String!) {
+query contentByPath($url: String!, $urlNoSlash: String!) {
     _Content(
         where: {
             _or: [

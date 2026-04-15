@@ -1,5 +1,4 @@
 query contentByPathVariant(
-    $base: String
     $url: String!
     $urlNoSlash: String!
     $variation: String
