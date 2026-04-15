@@ -2,13 +2,11 @@
 import alpinejs from '@astrojs/alpinejs';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
-import { adapter } from 'astro-auto-adapter';
+import netlifyAdapter from '@astrojs/netlify';
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import mkcert from 'vite-plugin-mkcert';
 
 import { loadI18nConfig } from './src/config/i18n.config.ts';
-
-const multiAdapter = await adapter();
 
 // Load i18n configuration (with optional environment variable override)
 // This happens at build time only, not at runtime
@@ -39,7 +37,7 @@ export default defineConfig({
 
     output: 'server',
 
-    adapter: multiAdapter,
+    adapter: netlifyAdapter(),
 
     server: { port: 4321 },
     vite: {
